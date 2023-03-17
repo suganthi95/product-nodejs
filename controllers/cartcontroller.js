@@ -59,10 +59,17 @@ const getListByUserId = async (req, res) => {
   let data = await connectDb();
   let list = await data
     .collection("cart")
-    .findOne({ user_id: new ObjectId(req.body.user_id) }); //get list by mail: ##user_email_id:req.body.user_email_id
+    .findOne({ user_id: new ObjectId(req.body.user_id) }); 
   res.send(list);
 };
 
+const getListByUserMailId = async (req, res) => {
+  let data = await connectDb();
+  let list = await data
+    .collection("cart")
+    .findOne({user_email_id:req.body.user_email_id});
+  res.send(list);
+};
 const deleteCartList = async (req, res) => {
   let data = await connectDb();
   let list = await data
@@ -80,5 +87,6 @@ module.exports = {
   updateCartList,
   deleteCartList,
   getListByUserId,
+  getListByUserMailId,
   deleteProduct,
 };
