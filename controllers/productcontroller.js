@@ -2,17 +2,7 @@ const express = require("express");
 const connectDb = require("../config/database.js");
 const ObjectId =require ("mongodb").ObjectId;
 const mongoose = require("mongoose");
-//const Products= require("../config/schema.js");
-// const productSchema= mongoose.Schema({
-//   name:String,
-//   model:Number,
-//   side:String,
-//   colour:String,
-//   category:String,
-//   price: Number
 
-// })
-// //module.exports= mongoose.model("products",productSchema);
 
 const getProduct= async  (req, res)=> {
   let data = await connectDb();

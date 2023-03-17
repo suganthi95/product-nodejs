@@ -3,31 +3,48 @@ const express = require("express");
 const connectDb = require("../config/database.js");
 const ObjectId = require("mongodb").ObjectId;
 const mongoose = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
+//uuidv4();
+
 //const Wishlist=require("../cofig/schema.js");
 const createList = async (req, res) => {
-    const { _id, products } = req.body;
-    let data = await connectDb();
-    let list = await data.collection("wishlist").insertOne({
-      _id: new ObjectId(_id),
-      products: products
-     // user_email_id: user_email_id,
-    });
-    res.send(list);
-    console.log(list);
-  };
+  const { product_id, user_id, user_email_id } = req.body;
+  let data = await connectDb();
+  let list = await data.collection("wishlist").insertOne({
+    user_id: new ObjectId(user_id),
+    products: [{ _id: uuidv4(), ...req.body.products }],
+    user_email_id: user_email_id,
+  });
+  res.send(list);
+};
 
+const deleteProduct = async (req, res) => {
+  const query = { _id: new ObjectId(req.body.list_id) };
+  let data = await connectDb();
+  let result = await data
+    .collection("wishlist")
+    .findOneAndUpdate(
+      { _id: new ObjectId(req.body.list_id) },
+      { $pull: { products: { _id: req.body.product_id } } }
+    );
+  res.send(result);
+};
 
-  const addProductList =async (req,res)=>{
-    let data = await connectDb();
-    let list = await data.collection("wishlist").
-    insertOne({_id:new ObjectId(req.body._id)},{products: req.body.products});
-    res.send(list);
+const addProduct = async (req, res) => {
+  let data = await connectDb();
+  let list = await data
+    .collection("wishlist")
+    .findOneAndUpdate(
+      { _id: new ObjectId(req.body.list_id) },
+      { $push: { products: { _id: uuidv4(), ...req.body.products } } }
+    );
+  res.send(list);
+};
 
-  };
 const getList = async (req, res) => {
-    let data = await connectDb();
-    let list = await data.collection("wishlist").find().toArray(); //{ user_email_id: req.body.user_email_id },{ projection: { products: 1, _id: 0 } }
-    res.send(list);
+  let data = await connectDb();
+  let list = await data.collection("wishlist").find().toArray(); //{ user_email_id: req.body.user_email_id },{ projection: { products: 1, _id: 0 } }
+  res.send(list);
 };
 
 const updateList = async (req, res) => {
@@ -36,7 +53,7 @@ const updateList = async (req, res) => {
     .collection("wishlist")
     .updateMany(
       { _id: new ObjectId(req.body._id) },
-      { $set: { products: req.body.products } }
+      { $set: { user_email_id: req.body.user_email_id } }
     );
   res.send(list);
 };
@@ -51,33 +68,67 @@ const deleteList = async (req, res) => {
 
 const getUserInfo = async (req, res) => {
   let data = await connectDb();
-  let result =await data.collection("wishlist").aggregate([
-    {
-      $lookup: {
-        from: "users",
-        localField: "user_id",
-        foreignField: "_id",
-        as: "userInfo",
+  let result = await data
+    .collection("wishlist")
+    .aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_id",
+          foreignField: "_id",
+          as: "userInfo",
+        },
       },
-    },
-  ]).toArray();
+    ])
+    .toArray();
   res.send(result);
 };
 
 const listByUserId = async (req, res) => {
-    let data = await connectDb();
-    let list = await data.collection("wishlist").find({user_id:new ObjectId(req.body.user_id)},{projection:{products:1,_id:0}}).toArray(); 
-    res.send(list);}
+  let data = await connectDb();
+  let list = await data
+    .collection("wishlist")
+    .find(
+      { user_id: new ObjectId(req.body.user_id) },
+      { projection: { products: 1, _id: 0 } }
+    )
+    .toArray();
+  res.send(list);
+};
 
-    const listByUserMail = async (req, res) => {
-        let data = await connectDb();
-        let list = await data.collection("wishlist").find({user_email_id:req.body.user_email_id},{projection:{products:1,_id:0}}).toArray(); 
-        res.send(list);
-    };
+const listByUserMail = async (req, res) => {
+  let data = await connectDb();
+  let list = await data
+    .collection("wishlist")
+    .find(
+      { user_email_id: req.body.user_email_id },
+      { projection: { products: 1, _id: 0 } }
+    )
+    .toArray();
+  res.send(list);
+};
 
-    const listByWhishListId = async (req, res) => {
-        let data = await connectDb();
-        let list = await data.collection("wishlist").find({_id:new ObjectId(req.body._id)},{projection:{products:1,_id:0}}).toArray(); 
-        res.send(list);}
+const listByWhishListId = async (req, res) => {
+  let data = await connectDb();
+  let list = await data
+    .collection("wishlist")
+    .find(
+      { _id: new ObjectId(req.body._id) },
+      { projection: { products: 1, _id: 0 } }
+    )
+    .toArray();
+  res.send(list);
+};
 
-    module.exports = {createList, addProductList, getList, updateList, deleteList, getUserInfo,listByUserId,listByUserMail,listByWhishListId };
+module.exports = {
+  deleteProduct,
+  createList,
+  addProduct,
+  getList,
+  updateList,
+  deleteList,
+  getUserInfo,
+  listByUserId,
+  listByUserMail,
+  listByWhishListId,
+};

@@ -1,8 +1,8 @@
-const express =require ("express");
+;const express =require ("express");
 const {getProductNamePrice,getProductName,getProduct,addProduct, findProduct,updateProduct, deletePrtodut,findProductById,findProductByName} = require ("../controllers/productcontroller.js");
 const router = express.Router();
 
-router.get('', getProduct );
+router.get('productlist', getProduct );
 router.get("/find", findProduct);
 
 router.post("/addproduct", addProduct);
