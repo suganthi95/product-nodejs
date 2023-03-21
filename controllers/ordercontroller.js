@@ -3,7 +3,10 @@ const ObjectId = require("mongodb").ObjectId;
 
 const getList = async (req, res) => {
   const data = await connectDb();
-  const list = await data.collection("orders").find({},{projection:{products :1,user_id:1,price:1,_id:0}}).toArray();
+  const list = await data
+    .collection("orders")
+    .find({}, { projection: { products: 1, user_id: 1, price: 1, _id: 0 } })
+    .toArray();
   res.send(list);
 };
 
@@ -20,8 +23,7 @@ const addOrder = async (req, res) => {
     },
   ]);
   res.send(list);
-  console.log(list);
-}; //{user_id:new ObjectId(req.body.user_id)},{projection:{product_id:1,price:1,quantity:1,_id:0}}
+};
 
 const listByUserId = async (req, res) => {
   const data = await connectDb();
@@ -46,7 +48,7 @@ const updateOrderInfo = async (req, res) => {
   res.send(list);
 };
 
-const deleteOrderInfo = async (req, res) => {
+const cancelOrder = async (req, res) => {
   const data = await connectDb();
   const list = await data
     .collection("orders")
@@ -54,10 +56,20 @@ const deleteOrderInfo = async (req, res) => {
   res.send(list);
 };
 
+const cancelOrder_pro = async (req, res) => {
+  const data = await (await connectDb()).collection("orders");
+  const cancelOdr = await data.findOneAndUpdate(
+    { _id: new ObjectId(req.body.order_id) },
+    { $pull: { products: { product_id: req.body.product_id } } }
+  );
+  res.send({message:"order cancelled amount will be refund"});
+};
+
 module.exports = {
   getList,
   addOrder,
   listByUserId,
   updateOrderInfo,
-  deleteOrderInfo,
+  cancelOrder_pro,
+  cancelOrder,
 };

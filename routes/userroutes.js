@@ -1,5 +1,3 @@
-// user  routes code hereconst connectDb = require("../config/database.js");
-
 const express = require("express");
 const {
   getUsers,
@@ -10,7 +8,7 @@ const {
   findUdserById,
   findUserByName,
   findUserByMail,
-  getUsersList
+  getUsersList,
 } = require("../controllers/usercontroller.js");
 const router = express.Router();
 
@@ -24,13 +22,12 @@ router.patch("/updateuser", updateUser);
 
 router.delete("/deleteuser", deleteUser);
 
-router.get("/findbyid",findUdserById);
+router.get("/findbyid", findUdserById);
 
-router.get("/findbyname",findUserByName);
+router.get("/findbyname", findUserByName);
 
-router.get("/findbymail",findUserByMail);
+router.get("/findbymail", findUserByMail);
 
-router.get("/userslist",getUsersList);
+router.get("/userslist", getUsersList);
 
 module.exports = router;
-//export default router;

@@ -1,7 +1,39 @@
-// user info crud operation code here
-const express = require("express");
 const connectDb = require("../config/database.js");
 const ObjectId = require("mongodb").ObjectId;
+
+const addUser = async (req, res) => {
+  let data = await connectDb();
+  let result = await data.collection("users").insertOne({
+    fullName: req.body.name,
+    mail_id: req.body.mail_id,
+    password: req.body.password,
+  });
+  res.send(result);
+};
+
+const findUdserById = async (req, res) => {
+  let data = await connectDb();
+  let result = await data
+    .collection("users")
+    .findOne({ _id: new ObjectId(req.body.user_id) });
+  res.send(result);
+};
+
+const findUserByMail = async (req, res) => {
+  let data = await connectDb();
+  let users = await data
+    .collection("users")
+    .findOne({ mail_id: req.body.mail_id });
+  res.send(users);
+};
+
+const findUser = async (req, res) => {
+  let data = await connectDb();
+  let result = await data
+    .collection("users")
+    .findOne({ fullName: req.body.fullName });
+  res.send(result);
+};
 
 const getUsers = async (req, res) => {
   let data = await connectDb();
@@ -9,58 +41,44 @@ const getUsers = async (req, res) => {
   res.send(result);
 };
 
-const findUser = async (req, res) => {
+const getUsersList = async (req, res) => {
   let data = await connectDb();
-  let result = await data.collection("users").findOne({ fullName: req.body.fullName});
-  res.send(result);
-};
-
-const addUser = async (req, res) => {
-  let data = await connectDb();
-  let result = await data.collection("users").insertOne(req.body);
-  res.send(result);
+  let usersList = await data
+    .collection("users")
+    .find({}, { projection: { fullName: 1, _id: 0 } })
+    .toArray();
+  res.send(usersList);
 };
 
 const updateUser = async (req, res) => {
   let data = await connectDb();
-  let result = await data .collection("users") .updateOne(
-      { fullName: req.body.fullName },
+  let result = await data
+    .collection("users")
+    .updateOne(
+      { _id: req.body.user_id },
       { $set: { password: req.body.password } }
     );
-  res.send(`User with ${req.body.fullName} is updated!`);
+  res.send(`User with ${req.body.user_id} is updated!`);
 };
 
-const deleteUser= async (req,res)=>{
+const deleteUser = async (req, res) => {
   let data = await connectDb();
-  let result = await data.collection("users").deleteOne({password:req.body.password});
-    res.send(`User with ${req.body.password} is deleted`);
-}
-
-const findUdserById =async (req,res)=>{
-  let data = await connectDb();
-    let result = await data.collection("users").findOne({_id:new ObjectId(req.body._id)});
-    res.send(result);
-} ;
-
-const findUserByMail = async (req,res)=>{
-let data = await connectDb();
-let users = await data.collection("users").findOne({mail_id:req.body.mail_id});
-res.send(users);
-console.log(users);
+  let result = await data
+    .collection("users")
+    .deleteOne({ _id: req.body.user_id });
+  res.send(`User with ${req.body.user_id} is deleted`);
 };
 
-async function findUserByName(req, res) {
+const findUserByName = async (req, res) => {
   let data = await connectDb();
-  let users = await data.collection("users").find({fullName: req.body.fullName }).toArray();
+  let users = await data
+    .collection("users")
+    .find({ fullName: req.body.fullName })
+    .toArray();
   res.send(users);
   //console.log(users);
 };
 
-const getUsersList= async (req,res)=>{
-  let data =await connectDb();
-  let usersList =await data.collection("users").find({},{projection:{fullName:1,_id:0}}).toArray();
-  res.send(usersList);
-};
 module.exports = {
   getUsers,
   findUser,
@@ -70,5 +88,14 @@ module.exports = {
   findUserByMail,
   findUdserById,
   findUserByName,
-  getUsersList
+  getUsersList,
 };
+/*app.post("/login", async (req, res) => {
+  let data = await dbConnect();
+ // let user=await data.collection("users").insertOne(req.body);//.toArray(););
+ // console.log(user);
+let findUser =await data.collection("users")
+.find({mail_id:req.params.mail_id});//.toArray(); //(users)=>users.name === req.body.name
+res.send(findUser);
+  //res.send("you are logged in");
+});*/

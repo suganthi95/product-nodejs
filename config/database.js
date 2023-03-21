@@ -1,4 +1,3 @@
-// database configuration code here 
 const { MongoClient } =require( "mongodb");
 
 const url ="mongodb://127.0.0.1:27017";
@@ -10,6 +9,5 @@ async function connectDb(){
       return  result.db(database);
     };
 module.exports= connectDb;
-//export default connectDb;
 
 
