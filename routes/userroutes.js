@@ -1,7 +1,9 @@
 const express = require("express");
+
 const {
   getUsers,
-  addUser,
+  signUp,
+  signIn,
   findUser,
   updateUser,
   deleteUser,
@@ -10,24 +12,23 @@ const {
   findUserByMail,
   getUsersList,
 } = require("../controllers/usercontroller.js");
+const authMiddeleware = require("../config/authMiddleware.js");
 const router = express.Router();
 
-router.get("", getUsers);
 
+router.get("", getUsers);
 router.get("/find", findUser);
 
-router.post("/adduser", addUser);
+router.post("/adduser", signUp);
+router.post("/signin", signIn);
 
-router.patch("/updateuser", updateUser);
+router.put("/updateuser",authMiddeleware, updateUser);
+router.delete("/deleteuser",authMiddeleware, deleteUser);
 
-router.delete("/deleteuser", deleteUser);
+router.get("/findbyid",authMiddeleware, findUdserById);
+router.get("/findbyname",authMiddeleware, findUserByName);
 
-router.get("/findbyid", findUdserById);
-
-router.get("/findbyname", findUserByName);
-
-router.get("/findbymail", findUserByMail);
-
-router.get("/userslist", getUsersList);
+router.get("/findbymail",authMiddeleware, findUserByMail);
+router.get("/userslist",authMiddeleware, getUsersList);
 
 module.exports = router;

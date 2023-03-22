@@ -10,22 +10,24 @@ const {addProduct,
     listByUserMail,
     listByWhishListId
     } = require ("../controllers/wishlistcontroller.js");
+const authMiddleware= require("../config/authMiddleware.js") 
+
 const router = express.Router();
 
-router.post("/addlist",createList);
-router.post("/product", addProduct);
+router.post("/addlist",authMiddleware, createList);
+router.post("/product",authMiddleware,  addProduct);
 
-router.get("/getlist",getList);
-router.patch("/updatelist",updateList);
+router.get("/getlist",authMiddleware, getList);
+router.patch("/updatelist",authMiddleware, updateList);
 
-router.delete("/deletelist",deleteList);
-router.get("/getuserinfo", getUserInfo);
+router.delete("/deletelist",authMiddleware, deleteList);
+router.get("/getuserinfo",authMiddleware,  getUserInfo);
 
-router.get("/listbyuserid",listByUserId);
-router.get("/listbyusermail",listByUserMail);
+router.get("/listbyuserid",authMiddleware, listByUserId);
+router.get("/listbyusermail",authMiddleware, listByUserMail);
 
 
-router.get("/listbywishlistid",listByWhishListId);
-router.put("/deleteproduct",deleteProduct);
+router.get("/listbywishlistid",authMiddleware, listByWhishListId);
+router.put("/deleteproduct",authMiddleware, deleteProduct);
 
 module.exports=router;

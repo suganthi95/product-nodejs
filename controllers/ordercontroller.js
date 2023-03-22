@@ -10,6 +10,8 @@ const getList = async (req, res) => {
   res.send(list);
 };
 
+
+
 const addOrder = async (req, res) => {
   let data = await connectDb();
   const list = await data.collection("orders").insertMany([
@@ -20,8 +22,28 @@ const addOrder = async (req, res) => {
       totalamt: req.body.amount,
       address: req.body.address,
       orderdAt: new Date(),
-    },
+      status: req.body.status
+    }
   ]);
+  res.send(list);
+};
+
+const getCancelOrderList = async (req, res) => {
+  const data = await connectDb();
+  const list = await data
+    .collection("orders")
+    .find({status:"cancelled"},{projection:{products:1,status:1,_id:0}})
+    .toArray();
+  res.send(list);
+};
+
+
+const getRefundOrderList = async (req, res) => {
+  const data = await connectDb();
+  const list = await data
+    .collection("orders")
+    .find({status:"refunded"},{projection:{products:1,status:1,_id:0}})
+    .toArray();
   res.send(list);
 };
 
@@ -37,24 +59,26 @@ const listByUserId = async (req, res) => {
   res.send(list);
 };
 
-const updateOrderInfo = async (req, res) => {
+const cancelOrder = async (req, res) => {
+  const data = await connectDb();
+  const list = await data
+    .collection("orders")
+    .updateOne({ _id: new ObjectId(req.body.order_id)  },
+    { $set: { status:"cancelled" } }); // or {$set:{status:req.body.status}}
+  res.send(list);
+};
+
+const refundOrder = async (req, res) => {
   const data = await connectDb();
   const list = await data
     .collection("orders")
     .updateOne(
       { _id: new ObjectId(req.body.order_id) },
-      { $set: { address: req.body.address } }
+      { $set: { status: "refund" } } // or{$set:{status:req.body.status}}
     );
   res.send(list);
 };
 
-const cancelOrder = async (req, res) => {
-  const data = await connectDb();
-  const list = await data
-    .collection("orders")
-    .deleteOne({ _id: new ObjectId(req.body.order_id) });
-  res.send(list);
-};
 
 const cancelOrder_pro = async (req, res) => {
   const data = await (await connectDb()).collection("orders");
@@ -68,8 +92,10 @@ const cancelOrder_pro = async (req, res) => {
 module.exports = {
   getList,
   addOrder,
+  getCancelOrderList,
+  getRefundOrderList,
   listByUserId,
-  updateOrderInfo,
+  refundOrder,
   cancelOrder_pro,
   cancelOrder,
 };

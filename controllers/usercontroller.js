@@ -1,15 +1,63 @@
 const connectDb = require("../config/database.js");
 const ObjectId = require("mongodb").ObjectId;
+const { hashValidator, hashGenerate } = require("../config/hash.js");
+const  tokenGenerator= require("../config/token.js");
 
-const addUser = async (req, res) => {
-  let data = await connectDb();
-  let result = await data.collection("users").insertOne({
-    fullName: req.body.name,
-    mail_id: req.body.mail_id,
-    password: req.body.password,
-  });
-  res.send(result);
+const signUp= async (req, res) => {
+  try {
+    const hashedPassword = await hashGenerate(req.body.password);
+    let data = await connectDb();
+    let result = await data.collection("users").insertOne({
+      fullName: req.body.name,
+      mail_id: req.body.mail_id,
+      password: hashedPassword,
+    });
+    res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
 };
+
+const signIn = async (req, res) => {
+  try {
+    const data = await connectDb();
+    const existingUser = await data
+      .collection("users")
+      .findOne({ mail_id: req.body.mail_id });
+    if (!existingUser) {
+      res.send("invalid mail_id");
+    } else {
+      const checkUser = await hashValidator(
+        req.body.password,
+        existingUser.password
+      );
+      if (!checkUser) {
+        res.send("invalid password");
+      } else {
+        const token = await tokenGenerator(existingUser.mail_id);
+        res.cookie("jwt", token,{httpOnly:true});
+        res.send(token);
+      }
+    }
+  } catch (err) {
+    res.send(err);
+  
+  }
+};
+
+/*const authVerify = async (req, res, next) => {
+  try {
+    const{ jwt } =  req.cookies;
+    const valid = await tokenValidator(jwt);
+    if (valid) {
+      next();
+    } else {
+      res.send("Access Denied");
+    }
+  } catch (err) {
+    res.send(err);
+  }
+};*/
 
 const findUdserById = async (req, res) => {
   let data = await connectDb();
@@ -82,7 +130,8 @@ const findUserByName = async (req, res) => {
 module.exports = {
   getUsers,
   findUser,
-  addUser,
+  signUp,
+  signIn,
   updateUser,
   deleteUser,
   findUserByMail,
@@ -90,12 +139,3 @@ module.exports = {
   findUserByName,
   getUsersList,
 };
-/*app.post("/login", async (req, res) => {
-  let data = await dbConnect();
- // let user=await data.collection("users").insertOne(req.body);//.toArray(););
- // console.log(user);
-let findUser =await data.collection("users")
-.find({mail_id:req.params.mail_id});//.toArray(); //(users)=>users.name === req.body.name
-res.send(findUser);
-  //res.send("you are logged in");
-});*/

@@ -93,7 +93,7 @@ const deleteProduct = async (req, res) => {
       { _id: new ObjectId(req.body.list_id) },
       { $pull: { products: { _id: req.body.product_id } } }
     );
-  res.send();
+  res.send(`The product with ID ${ req.body.product_id } deleted from wishlist`);
 };
 
 const getUserInfo = async (req, res) => {

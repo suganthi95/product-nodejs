@@ -1,4 +1,3 @@
-// cart crud operation code here
 const express = require("express");
 const connectDb = require("../config/database.js");
 const ObjectId = require("mongodb").ObjectId;
@@ -27,6 +26,15 @@ const addProductToCart = async (req, res) => {
   res.send(cart);
 };
 
+const deleteCartList = async (req, res) => {
+  let data = await connectDb();
+  let list = await data
+    .collection("cart")
+    .deleteOne({ user_id: new ObjectId(req.body.user_id) });
+  res.send(list);
+};
+
+
 const deleteProduct = async (req, res) => {
   let data = await connectDb();
   let list = await data
@@ -35,14 +43,9 @@ const deleteProduct = async (req, res) => {
       { _id: new ObjectId(req.body.cart_id) },
       { $pull: { products: { _id: req.body.product_id } } }
     );
-  res.send(list);
-};
+  res.send(`Product with ID:${req.body.product_id} deleted `);
+    };
 
-const getCartList = async (req, res) => {
-  let data = await connectDb();
-  let list = await data.collection("cart").find().toArray();
-  res.send(list);
-};
 
 const updateCartList = async (req, res) => {
   let data = await connectDb();
@@ -55,11 +58,17 @@ const updateCartList = async (req, res) => {
   res.send(list);
 };
 
+const getCartList = async (req, res) => {
+  let data = await connectDb();
+  let list = await data.collection("cart").find().toArray();
+  res.send(list);
+};
+
 const getListByUserId = async (req, res) => {
   let data = await connectDb();
   let list = await data
     .collection("cart")
-    .findOne({ user_id: new ObjectId(req.body.user_id) }); 
+    .findOne({ user_id: new ObjectId(req.body.user_id) },{projection:{products:1,_id:0}}); 
   res.send(list);
 };
 
@@ -68,13 +77,6 @@ const getListByUserMailId = async (req, res) => {
   let list = await data
     .collection("cart")
     .findOne({user_email_id:req.body.user_email_id});
-  res.send(list);
-};
-const deleteCartList = async (req, res) => {
-  let data = await connectDb();
-  let list = await data
-    .collection("cart")
-    .deleteOne({ user_id: new ObjectId(req.body.user_id) });
   res.send(list);
 };
 
