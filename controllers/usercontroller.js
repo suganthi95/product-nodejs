@@ -35,7 +35,7 @@ const signIn = async (req, res) => {
         res.send("invalid password");
       } else {
         const token = await tokenGenerator(existingUser.mail_id);
-        res.cookie("jwt", token,{httpOnly:true});
+       // res.cookie("jwt", token,{httpOnly:true});
         res.send(token);
       }
     }
