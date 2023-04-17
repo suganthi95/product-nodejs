@@ -1,9 +1,10 @@
 const bcrypt = require("bcrypt");
-const saltT = 10;
+require("dotenv").config();
+
 
 const hashGenerate = async (plainPassword) => {
   try {
-    const salt = await bcrypt.genSalt(saltT);
+    const salt = await bcrypt.genSalt(process.env.SALT);
     const hash = await bcrypt.hash(plainPassword, salt);
     return hash;
   } catch (err) {
