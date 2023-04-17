@@ -9,14 +9,16 @@ const {
   deletePrtodut,
   findProductById,
   findProductByName,
+  test
 } = require("../controllers/productcontroller.js");
 const authMiddleware = require("../config/authMiddleware.js")
 const router = express.Router();
 
-router.get("/productlist", authMiddleware, getProduct);
-router.get("/find",authMiddleware, findProduct);
+router.get("/productlist", getProduct);
+router.get("/find", findProduct);
+router.get("/test",test);
 
-router.post("/addproduct",authMiddleware,  addProduct);
+router.post("/addproduct",addProduct);
 router.patch("/updateproduct", authMiddleware, updateProduct);
 
 router.delete("/deleteproduct",authMiddleware,  deletePrtodut);

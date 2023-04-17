@@ -1,13 +1,35 @@
-const { MongoClient } =require( "mongodb");
+const mongoose =require("mongoose");
+ const uri ="mongodb+srv://keasnmacaa:keasnmacaa@cluster0.r4fp7bw.mongodb.net/ecom-app_db";
 
-const url ="mongodb://127.0.0.1:27017";
-const database = "HouseHoldProduct";
-const client = new MongoClient(url);
+ const connectDb=()=>{
+  return mongoose.connect(uri,{
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+  });
+ };
+ 
 
-async function connectDb(){
-    let result = await client.connect();
-      return  result.db(database);
-    };
-module.exports= connectDb;
+
+module.exports = connectDb;
+
+
+
+
+
+
+
+
+// const { MongoClient } =require( "mongodb");
+
+
+
+// const database = "ecom-app_db";
+// const client = new MongoClient(url);
+
+// async function connectDb(){
+//     let result = await client.connect();
+//       return  result.db(database);
+//     };
+// module.exports= connectDb;
 
 

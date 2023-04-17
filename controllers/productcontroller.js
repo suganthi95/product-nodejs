@@ -1,27 +1,48 @@
 const connectDb = require("../config/database.js");
 const ObjectId = require("mongodb").ObjectId;
+const Product = require("../config/schema.js");
 
 const addProduct = async (req, res) => {
-  let data = await connectDb();
-  let result = await data
-  .collection("products").insertOne({
-    name:req.body.name,
-    model:req.body.model,
-    size:req.body.size,
-    colour:req.body.colour,
-    category:req.body.category,
-    price:req.body.price
-});
+ try { await connectDb();
+  let result = await Product.product.create(req.body);
   res.send(result);
+}catch(err){ 
+  res.send(err);
+  }
+
+};
+
+const getProduct = async (req, res) => {
+  try {
+    await connectDb();
+    let result = await Product.product.find({});
+    res.send(result);
+  }catch(err){
+    console.log(err);
+    res.send(err);
+  }
+};
+
+
+
+const test = async(req,res)=>{
+  try {
+    await connectDb();
+   let result = await test.find({});
+ console.log("test collection",result);
+   res.send(result);
+ }catch(err){
+   res.send(err);
+ }
 };
 
 const findProduct = async (req, res) => {
-  let data = await connectDb();
-  let result = await data
-    .collection("products")
-    .find({ name: req.body.name })
-    .toArray();
-  res.send(result);
+  try { await connectDb();
+    let result = await Product.findOne({_id:new ObjectId(req.body._id)});
+    res.send(result);
+  }catch(err){
+    res.send(err);
+  }
 };
 
 const findProductById = async (req, res) => {
@@ -58,12 +79,6 @@ const getProductName = async (req, res) => {
 res.send(product)
 };
 
-const getProduct = async (req, res) => {
-  let data = await connectDb();
-  let result = await data
-  .collection("products").find().toArray();
-  res.send(result);
-};
 
 
 const updateProduct = async (req, res) => {
@@ -98,4 +113,5 @@ module.exports = {
   deletePrtodut,
   findProductById,
   findProductByName,
+  test
 };
