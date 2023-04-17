@@ -1,8 +1,12 @@
 const mongoose =require("mongoose");
- const uri ="mongodb+srv://keasnmacaa:keasnmacaa@cluster0.r4fp7bw.mongodb.net/ecom-app_db";
+require("dotenv").config();
 
- const connectDb=()=>{
-  return mongoose.connect(uri,{
+
+const uri =process.env.DATABASE_URI;
+console.log(uri);
+ 
+const connectDb=()=>{
+  return mongoose.connect(`${uri}`,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
   });
