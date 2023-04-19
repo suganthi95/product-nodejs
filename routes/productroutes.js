@@ -22,7 +22,7 @@ router.get("/findbyid",  findProductById);
 
 
 
-router.patch("/updateproduct", authMiddleware, updateProduct);
+router.put("/updateproduct",  updateProduct);
 
 router.delete("/deleteproduct",  deletePrtodut);
 

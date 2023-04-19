@@ -44,6 +44,18 @@ const findProductById = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+   try{
+    await connectDb();
+  let result = await Product.product.findByIdAndUpdate(
+      { _id:req.body._id },
+      { $set: { description: req.body.description } }
+    );
+  res.send(result);
+}catch(err){
+  res.send(err);
+};
+}
 
 const deletePrtodut = async (req, res) => {
   try{
@@ -85,16 +97,7 @@ const getProductNamePrice = async (req, res) => {
   res.send(result);
 };
 
-const updateProduct = async (req, res) => {
-  let data = await connectDb();
-  let result = await data
-    .collection("products")
-    .updateOne(
-      { _id: new ObjectId(req.body.product_id) },
-      { $set: { price: req.body.price } }
-    );
-  res.send(result);
-};
+
 
 
 
