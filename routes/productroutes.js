@@ -24,7 +24,7 @@ router.get("/findbyid",  findProductById);
 
 router.patch("/updateproduct", authMiddleware, updateProduct);
 
-router.delete("/deleteproduct", authMiddleware, deletePrtodut);
+router.delete("/deleteproduct",  deletePrtodut);
 
 
 router.get("/findbyname", authMiddleware, findProductByName);
