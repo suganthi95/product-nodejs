@@ -4,7 +4,7 @@ const {
   getProductName,
   getProduct,
   addProduct,
-  findProduct,
+  //findProduct,
   updateProduct,
   deletePrtodut,
   findProductById,
@@ -15,7 +15,7 @@ const authMiddleware = require("../config/authMiddleware.js");
 const router = express.Router();
 
 router.get("/productlist", getProduct);
-router.get("/find", findProduct);
+//router.get("/find", findProduct);
 router.post("/addproduct", addProduct);
 router.get("/findbyid",  findProductById);
 
@@ -30,6 +30,6 @@ router.delete("/deleteproduct", authMiddleware, deletePrtodut);
 router.get("/findbyname", authMiddleware, findProductByName);
 router.get("/names", authMiddleware, getProductName);
 
-router.get("/nameandprice", authMiddleware, getProductNamePrice);
+router.get("/nameandprice",  getProductNamePrice);
 
 module.exports = router;

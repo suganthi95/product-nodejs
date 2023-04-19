@@ -23,26 +23,32 @@ const getProduct = async (req, res) => {
   }
 };
 
-const findProduct = async (req, res) => {
-  try {
-    await connectDb();
-    let result = await Product.findOne({ _id: new ObjectId(req.body._id) });
-    res.send(result);
-  } catch (err) {
-    res.send(err);
-  }
-};
+// const findProduct = async (req, res) => {
+//   try {
+//     await connectDb();
+//     let result = await Product.product.findOne({ _id: new ObjectId(req.body._id) });
+//     res.send(result);
+//   } catch (err) {
+//     res.send(err);
+//   }
+// };
 
 const findProductById = async (req, res) => {
   try {
     await connectDb();
     let product = await Product.product.findOne({ _id: req.body._id });
     res.send(product);
-    console.log(product);
+    
   } catch (err) {
     res.send(err);
   }
 };
+
+
+
+
+
+
 
 const findProductByName = async (req, res) => {
   let products = await connectDb();
@@ -63,12 +69,10 @@ const getProductName = async (req, res) => {
 };
 
 const getProductNamePrice = async (req, res) => {
-  let products = await connectDb();
-  let product = await products
-    .collection("products")
-    .find({}, { projection: { name: 1, price: 1, _id: 0 } })
-    .toArray();
-  res.send(product);
+ await connectDb();
+  let result = await Product.product
+   .find({}, { project: {_ } });
+  res.send(result);
 };
 
 const updateProduct = async (req, res) => {
@@ -94,7 +98,7 @@ module.exports = {
   getProductNamePrice,
   getProductName,
   getProduct,
-  findProduct,
+  //findProduct,
   addProduct,
   updateProduct,
   deletePrtodut,
