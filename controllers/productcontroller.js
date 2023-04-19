@@ -45,6 +45,16 @@ const findProductById = async (req, res) => {
 };
 
 
+const deletePrtodut = async (req, res) => {
+  try{
+  await connectDb();
+  let result = await Product.product.findByIdAndDelete({ _id:req.body._id });
+  res.send(`The product with the ID: ${req.body._id} is deleted`);
+}catch(err){
+  res.send(err);
+}
+};
+
 
 
 
@@ -86,13 +96,7 @@ const updateProduct = async (req, res) => {
   res.send(result);
 };
 
-const deletePrtodut = async (req, res) => {
-  let data = await connectDb();
-  let result = await data
-    .collection("products")
-    .deleteOne({ _id: new ObjectId(req.body.product_id) });
-  res.send(`The product with the ID: ${req.body.product_id} is deleted`);
-};
+
 
 module.exports = {
   getProductNamePrice,
