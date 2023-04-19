@@ -16,7 +16,7 @@ const product = mongoose.model("product", productSchema);
 
 const categorySchema = new Schema(
   {
-    title: String,
+    type: String,
     products: Array
   },
   { timestamps: true }
