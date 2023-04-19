@@ -16,31 +16,30 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 const mongoose = require("mongoose");
 const uri = process.env.DATABASE_URI
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(`${uri}`);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.log(error);
-    process.exit(1);
-  }
-}
+// const connectDB = async () => {
+//   try {
+//     const conn = await mongoose.connect(`${uri}`);
+//     console.log(`MongoDB Connected: ${conn.connection.host}`);
+//   } catch (error) {
+//     console.log(error);
+//     process.exit(1);
+//   }
+// }
 
 
 app.use("/products", productRoute);
-app.use("/users", userRoute);
 app.use("/wishlist", wishListRoute);
 app.use("/cart", cartRoute);
 app.use("/order", orderRoute);
 app.use("/category", categoryRoute);
 //Connect to the database before listening
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log("listening for requests");
-    })
-})
+// connectDB().then(() => {
+//     app.listen(PORT, () => {
+//         console.log("listening for requests");
+//     })
+// })
 
 
 
 
-// app.listen(PORT, () => console.log(`Listening the port :${PORT}`));
+app.listen(PORT, () => console.log(`Listening the port :${PORT}`));

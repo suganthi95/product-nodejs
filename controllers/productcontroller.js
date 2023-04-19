@@ -1,10 +1,10 @@
-//const connectDb = require("../config/database.js");
+const connectDb = require("../config/database.js");
 const ObjectId = require("mongodb").ObjectId;
 const Product = require("../config/schema.js");
 
 const addProduct = async (req, res) => {
   try {
-   // await connectDb();
+   await connectDb();
     let result = await Product.product.create(req.body);
     res.send(result);
   } catch (err) {
@@ -14,7 +14,7 @@ const addProduct = async (req, res) => {
 
 const getProduct = async (req, res) => {
   try {
-    //await connectDb();
+    await connectDb();
     let result = await Product.product.find({});
     res.send(result);
   } catch (err) {
@@ -35,7 +35,7 @@ const getProduct = async (req, res) => {
 
 const findProductById = async (req, res) => {
   try {
-    //await connectDb();
+    await connectDb();
     let product = await Product.product.findOne({ _id: req.body._id });
     res.send(product);
     
