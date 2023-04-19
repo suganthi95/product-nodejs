@@ -16,27 +16,15 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 const mongoose = require("mongoose");
 
-// //configure mongoose
-
-// const uri ="mongodb+srv://keasnmacaa:keasnmacaa@cluster0.r4fp7bw.mongodb.net/ecom-app_db";
-
-// mongoose.connect(
-//   uri,    //process.env.MONGODB_URI || mongodb://localhost/CRUD
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   },
-//   (err) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       console.log("Connected to MongoDB");
-//     }
-//   }
-// );
-
-
-
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.DATABASE_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
 
 
 app.use("/products", productRoute);
@@ -45,4 +33,14 @@ app.use("/wishlist", wishListRoute);
 app.use("/cart", cartRoute);
 app.use("/order", orderRoute);
 app.use("/category", categoryRoute);
-app.listen(PORT, () => console.log(`Listening the port :${PORT}`));
+//Connect to the database before listening
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log("listening for requests");
+    })
+})
+
+
+
+
+// app.listen(PORT, () => console.log(`Listening the port :${PORT}`));

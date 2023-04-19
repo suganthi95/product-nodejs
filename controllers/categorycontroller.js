@@ -1,10 +1,10 @@
-const connectDb = require("../config/database.js");
+//const connectDb = require("../config/database.js");
 const ObjectId = require("mongodb").ObjectId;
 const Category = require("../config/schema.js");
 
 const createCategory = async (req, res) => {
   try {
-    await connectDb();
+   // await connectDb();
     const data = await Category.category.create(req.body);
     res.send(data);
   } catch (err) {
@@ -15,7 +15,7 @@ const createCategory = async (req, res) => {
 
 const getCategory = async (req, res) => {
   try {
-    await connectDb();
+    //await connectDb();
     const data = await Category.category.find({});
     res.send(data);
   } catch (err) {
@@ -25,7 +25,7 @@ const getCategory = async (req, res) => {
 
 const deleteCatById = async (req, res) => {
   try {
-    await connectDb();
+    //await connectDb();
     const data = await Category.category.findByIdAndDelete({
       _id: req.body._id,
     });
@@ -37,7 +37,7 @@ const deleteCatById = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    await connectDb();
+    //await connectDb();
     const data = await Category.category.findOneAndUpdate(
       { _id: req.body._id },
       { $push: { products: req.body.products } }
@@ -50,7 +50,7 @@ const addProduct = async (req, res) => {
 
 const getCategoryId = async (req, res) => {
   try {
-    await connectDb();
+    //await connectDb();
     const data = await Category.category.find({ type: req.body.type });
     res.send(data);
   } catch (err) {
@@ -60,7 +60,7 @@ const getCategoryId = async (req, res) => {
 
 const removeProduct = async (req, res) => {
   try {
-    await connectDb();
+    //await connectDb();
     const data = await Category.category.findOneAndUpdate(
       { _id: req.body._id },
      {$pull: { products: { _id: req.body.product_id } } }
