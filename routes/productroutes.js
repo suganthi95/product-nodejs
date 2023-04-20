@@ -9,6 +9,10 @@ const {
   deletePrtodut,
   findProductById,
   findProductByName,
+  lowToHighPrice,
+  highToLowPrice,
+  minPricePro,
+  limitProPrice
   
 } = require("../controllers/productcontroller.js");
 const authMiddleware = require("../config/authMiddleware.js");
@@ -18,6 +22,10 @@ router.get("/productlist", getProduct);
 //router.get("/find", findProduct);
 router.post("/addproduct", addProduct);
 router.get("/findbyid",  findProductById);
+router.get("/price/min", lowToHighPrice);
+router.get("/price/max", highToLowPrice);
+router.get("/low/price/product", minPricePro);
+router.get("/price/limit", limitProPrice);
 
 
 
