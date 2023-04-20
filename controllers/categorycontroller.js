@@ -11,7 +11,7 @@ const createCategory = async (req, res) => {
     res.send(err);
     console.log(err);
   }
-};
+}; 
 
 const getCategory = async (req, res) => {
   try {

@@ -5,10 +5,19 @@ const Schema = mongoose.Schema;
 const productSchema = new Schema(
   {
     title: String,
-    price: Number,
     description: String,
     images: String,
+    image2:String,
+    category:String,
+    isNew:{
+      type:Boolean,
+      default:true
+    },
+    oldPrice:Number, 
+    currPrice:Number,
+    
   },
+  { suppressReservedKeysWarning: true },
   { timestamps: true }
 );
 
