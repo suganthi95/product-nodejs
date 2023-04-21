@@ -48,7 +48,7 @@ const updateProduct = async (req, res) => {
     await connectDb();
     let result = await Product.product.findByIdAndUpdate(
       { _id: req.body._id },
-      { $set: { description: req.body.description } }
+      { $set: { category: req.body.category } }
     );
     res.send(result);
   } catch (err) {
@@ -76,6 +76,17 @@ const highToLowPrice = async (req, res) => {
   }
 };
 
+const proByCat =  async (req, res) => {
+  try {
+    await connectDb();
+    let result = await Product.product.find({category:req.body.category})
+    res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+
 const lowToHighPrice = async (req, res) => {
   try {
     await connectDb();
@@ -101,7 +112,7 @@ const limitProPrice = async (req, res) => {
     await connectDb();
     let result = await Product.product
       .find({ price: { $lte: req.body.price } })
-      .sort({ price: -1 });
+      .sort({ price: 1 });
     res.send(result);
   } catch (err) {
     res.send(err);
@@ -146,4 +157,5 @@ module.exports = {
   highToLowPrice,
   minPricePro,
   limitProPrice,
+  proByCat
 };

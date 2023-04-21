@@ -12,7 +12,8 @@ const {
   lowToHighPrice,
   highToLowPrice,
   minPricePro,
-  limitProPrice
+  limitProPrice,
+  proByCat
   
 } = require("../controllers/productcontroller.js");
 const authMiddleware = require("../config/authMiddleware.js");
@@ -26,7 +27,7 @@ router.get("/price/min", lowToHighPrice);
 router.get("/price/max", highToLowPrice);
 router.get("/low/price/product", minPricePro);
 router.get("/price/limit", limitProPrice);
-
+router.get("/kids", proByCat);
 
 
 
