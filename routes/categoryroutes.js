@@ -13,7 +13,24 @@ const {
   createChildCat,
   getChildMax,
   getChildMin,
-  limitProPrice
+  limitChildProPrice,
+
+  getMenPro,
+  getMenTrend,
+  getMenShirt,
+  getMenTrouser,
+  getMenMax,
+  getMenMin,
+  limitMenProPrice,
+
+  getWoPro,
+  getWoTrend,
+  getWoShirt,
+  getWoKurti,
+  getWoSaree,
+  getWoMax,
+  getWoMin,
+  limitWoProPrice,
   
 } = require("../controllers/categorycontroller.js");
 //const authMiddleware = require("../config/authMiddleware.js")
@@ -25,7 +42,25 @@ router.get("/children/shirts", getChildShirt);
 router.get("/children/trousers", getChildTrouser);
 router.get("/children/maxprice", getChildMax);
 router.get("/children/minprice", getChildMin);
-router.get("/children/filterbyprice", limitProPrice);
+router.get("/children/filterbyprice", limitChildProPrice);
+
+router.get("/women/all", getWoPro);
+router.get("/women/trendy", getWoTrend);
+router.get("/women/shirts", getWoShirt);
+router.get("/women/kurtis", getWoKurti);
+router.get("/women/sarees", getWoSaree);
+router.get("/women/maxprice", getWoMax);
+router.get("/women/minprice", getWoMin);
+router.get("/women/filterbyprice", limitWoProPrice);
+
+
+router.get("/men/all", getMenPro);
+router.get("/men/trendy", getMenTrend);
+router.get("/men/shirts", getMenShirt);
+router.get("/men/trousers", getMenTrouser);
+router.get("/men/maxprice", getMenMax);
+router.get("/men/minprice", getMenMin);
+router.get("/men/filterbyprice", limitMenProPrice);
 
 
 router.get("/list/:type", getCategory);
