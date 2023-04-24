@@ -37,6 +37,13 @@ const {
   getBagFilterByPrice,
   getMinPriceBag,
   getMaxPriceBag,
+
+  getAllWatch,
+  getWoWatch,
+  getMenWatch,
+  getWatchFilterByPrice,
+  getMaxPriceWatch,
+  getMinPriceWatch
   
 } = require("../controllers/categorycontroller.js");
 //const authMiddleware = require("../config/authMiddleware.js")
@@ -74,6 +81,13 @@ router.get("/bags/women", getWoBags);
 router.get("/bags/filterbyprice", getBagFilterByPrice);
 router.get("/bags/maxprice", getMaxPriceBag);
 router.get("/bags/minprice", getMinPriceBag);
+
+router.get("/watches/all", getAllWatch);
+router.get("/watches/men", getMenWatch);
+router.get("/watches/women", getWoWatch);
+router.get("/watches/filterbyprice", getWatchFilterByPrice);
+router.get("/watches/maxprice", getMaxPriceWatch);
+router.get("/watches/minprice", getMinPriceWatch);
 
 
 

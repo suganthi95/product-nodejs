@@ -491,7 +491,6 @@ const getWoBags = async (req, res) => {
   }
 };
 
-
 const getMenBags = async (req, res) => {
   try {
     await connectDb();
@@ -516,14 +515,16 @@ const getAllBags = async (req, res) => {
   }
 };
 
-
 const getBagFilterByPrice = async (req, res) => {
   try {
     await connectDb();
 
     let result = await Category.product.find({
-      $or: [{ category: "W-Bags" }, { category: "M-Bags" }],
-    }).sort({currPrice:req.body.price});
+      $and: [
+        { $or: [{ category: "W-Bags" }, { category: "M-Bags" }] },
+        { currPrice: { $lte: req.body.price } },
+      ],
+    });
     res.send(result);
   } catch (err) {
     res.send(err);
@@ -534,23 +535,111 @@ const getMaxPriceBag = async (req, res) => {
   try {
     await connectDb();
 
-    let result = await Category.product.find({
-      $or: [{ category: "W-Bags" }, { category: "M-Bags" }],
-    }).sort({currPrice:-1}).limit(1);
+    let result = await Category.product
+      .find({
+        $or: [{ category: "W-Bags" }, { category: "M-Bags" }],
+      })
+      .sort({ currPrice: -1 })
+      .limit(1);
     res.send(result);
   } catch (err) {
     res.send(err);
   }
 };
 
-
 const getMinPriceBag = async (req, res) => {
   try {
     await connectDb();
 
+    let result = await Category.product
+      .find({
+        $or: [{ category: "W-Bags" }, { category: "M-Bags" }],
+      })
+      .sort({ currPrice: 1 })
+      .limit(1);
+    res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+const getWoWatch = async (req, res) => {
+  try {
+    await connectDb();
+
+    let result = await Category.product.find({ category: "W-watch" });
+    res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+const getMenWatch = async (req, res) => {
+  try {
+    await connectDb();
+
+    let result = await Category.product.find({ category: "M-watch" });
+    res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+const getAllWatch = async (req, res) => {
+  try {
+    await connectDb();
+
     let result = await Category.product.find({
-      $or: [{ category: "W-Bags" }, { category: "M-Bags" }],
-    }).sort({currPrice:1}).limit(1);
+      $or: [{ category: "W-watch" }, { category: "M-watch" }],
+    });
+    res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+const getWatchFilterByPrice = async (req, res) => {
+  try {
+    await connectDb();
+
+    let result = await Category.product.find({
+      $and: [
+        { $or: [{ category: "W-watch" }, { category: "M-watch" }] },
+        { currPrice: { $lte: req.body.price } },
+      ],
+    });
+    res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+const getMaxPriceWatch = async (req, res) => {
+  try {
+    await connectDb();
+
+    let result = await Category.product
+      .find({
+        $or: [{ category: "W-watch" }, { category: "M-watch" }],
+      })
+      .sort({ currPrice: -1 })
+      .limit(1);
+    res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+const getMinPriceWatch = async (req, res) => {
+  try {
+    await connectDb();
+
+    let result = await Category.product
+      .find({
+        $or: [{ category: "W-watch" }, { category: "M-watch" }],
+      })
+      .sort({ currPrice: 1 })
+      .limit(1);
     res.send(result);
   } catch (err) {
     res.send(err);
@@ -674,5 +763,13 @@ module.exports = {
   getMenBags,
   getBagFilterByPrice,
   getMaxPriceBag,
-  getMinPriceBag
+  getMinPriceBag,
+
+
+  getAllWatch,
+  getWoWatch,
+  getMenWatch,
+  getWatchFilterByPrice,
+  getMaxPriceWatch,
+  getMinPriceWatch
 };
