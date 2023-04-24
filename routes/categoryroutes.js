@@ -31,6 +31,12 @@ const {
   getWoMax,
   getWoMin,
   limitWoProPrice,
+  getAllBags,
+  getMenBags,
+  getWoBags,
+  getBagFilterByPrice,
+  getMinPriceBag,
+  getMaxPriceBag,
   
 } = require("../controllers/categorycontroller.js");
 //const authMiddleware = require("../config/authMiddleware.js")
@@ -61,6 +67,16 @@ router.get("/men/trousers", getMenTrouser);
 router.get("/men/maxprice", getMenMax);
 router.get("/men/minprice", getMenMin);
 router.get("/men/filterbyprice", limitMenProPrice);
+ 
+router.get("/bags/all", getAllBags);
+router.get("/bags/men", getMenBags);
+router.get("/bags/women", getWoBags);
+router.get("/bags/filterbyprice", getBagFilterByPrice);
+router.get("/bags/maxprice", getMaxPriceBag);
+router.get("/bags/minprice", getMinPriceBag);
+
+
+
 
 
 router.get("/list/:type", getCategory);
