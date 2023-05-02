@@ -1,14 +1,21 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
-const tokenGenerator = (mail_id) => {
-  const token = jwt.sign({ mail_id }, process.env.JWT_KEY, { expiresIn: "5 minute" });
+const JWT_KEY = "SFWERgjEYJSRATHafathrsr"
+const JWT_RESET_KEY = "hrdsfdhBtthSGhzfdnfAsdt"
+const tokenGenerator = (email) => {
+  const token = jwt.sign({ email }, JWT_KEY, { expiresIn: "15 minute" });
   return token;
 };
 
-/*const tokenValidator = (token) => {
-  const data = jwt.verify(token, JWT_KEY);
-  return data;
-};*/
 
-module.exports =  tokenGenerator;
+const tokenGen = (email)=>{
+  const token = jwt.sign({ email }, JWT_RESET_KEY, { expiresIn: "15 minute" });
+  return token;
+}
+
+const tokenValidator = (token) => {
+  const data = jwt.verify(token, JWT_RESET_KEY,{expiresIn:"15 minute"});
+  return data;
+};
+
+module.exports = { tokenGenerator,tokenGen,tokenValidator};

@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const productRoute = require("./routes/productroutes.js");
-//const userRoute = require("./routes/userroutes.js");
+const userRoute = require("./routes/userroutes.js");
 const wishListRoute = require("./routes/wishlistroutes.js");
 const cartRoute = require("./routes/cartroutes.js");
 const orderRoute = require("./routes/orderroutes.js");
@@ -31,7 +31,10 @@ app.use("/products", productRoute);
 app.use("/wishlist", wishListRoute);
 app.use("/cart", cartRoute);
 app.use("/order", orderRoute);
-app.use("/category", categoryRoute);
+app.use("/api", categoryRoute);
+
+app.use("/api/users",userRoute)
+
 //Connect to the database before listening
 // connectDB().then(() => {
 //     app.listen(PORT, () => {

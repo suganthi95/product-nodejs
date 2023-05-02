@@ -19,6 +19,53 @@ const getChildrenPro = async (req, res) => {
   }
 };
 
+const childCategory = async (req, res) => {
+  try {
+    await connectDb();
+    const min = await Category.product
+      .find({
+        $or: [
+          { category: { $eq: "K-shirt" } },
+          { category: { $eq: "K-Trendy" } },
+          { category: { $eq: "K-Trousers" } },
+        ],
+      })
+      .sort({ currPrice: 1 })
+      .limit(1);
+    //console.log(min[0].currPrice);
+
+    const max = await Category.product
+      .find({
+        $or: [
+          { category: { $eq: "K-shirt" } },
+          { category: { $eq: "K-Trendy" } },
+          { category: { $eq: "K-Trousers" } },
+        ],
+      })
+      .sort({ currPrice: -1 })
+      .limit(1);
+    //console.log(max[0].currPrice);
+    // const shirts = await Category.product.find({ category: "K-shirt" });
+    // const trousers = await Category.product.find({ category: "K-Trousers" });
+    // const  trendy =  await Category.product.find({ category: "K-Trendy" });
+    //   const child = await Category.category.insertMany({
+    //   category: [shirts[0].category, trousers[0].category, trendy[0].category],
+    //   minPrice:min[0].currPrice,
+    //   maxPrice:max[0].currPrice
+    //  });
+
+    const data = {
+      category: ["shirts", "trousers", "trendy"], //[shirts[0].category, trousers[0].category, trendy[0].category],
+      minPrice: min[0].currPrice,
+      maxPrice: max[0].currPrice,
+    };
+    res.send(data);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
+};
+
 const getChildTrend = async (req, res) => {
   try {
     await connectDb();
@@ -247,6 +294,43 @@ const getMenMin = async (req, res) => {
   }
 };
 
+const menCategory = async (req, res) => {
+  try {
+    await connectDb();
+    const min = await Category.product
+      .find({
+        $or: [
+          { category: { $eq: "M-shirt" } },
+          { category: { $eq: "M-Trendy" } },
+          { category: { $eq: "M-Trousers" } },
+        ],
+      })
+      .sort({ currPrice: 1 })
+      .limit(1);
+    //console.log(min[0].currPrice);
+
+    const max = await Category.product
+      .find({
+        $or: [
+          { category: { $eq: "M-shirt" } },
+          { category: { $eq: "M-Trendy" } },
+          { category: { $eq: "M-Trousers" } },
+        ],
+      })
+      .sort({ currPrice: -1 })
+      .limit(1);
+
+    const data = {
+      category: ["shirts", "trousers", "trendy"], //[shirts[0].category, trousers[0].category, trendy[0].category],
+      minPrice: min[0].currPrice,
+      maxPrice: max[0].currPrice,
+    };
+    res.send(data);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
+};
 // const createMenCat = async (req, res) => {
 //   try {
 //     await connectDb();
@@ -327,6 +411,46 @@ const getWoPro = async (req, res) => {
     res.send(result);
   } catch (err) {
     res.send(err);
+  }
+};
+
+const woCategory = async (req, res) => {
+  try {
+    await connectDb();
+    const min = await Category.product
+      .find({
+        $or: [
+          { category: { $eq: "M-shirt" } },
+          { category: { $eq: "M-Trendy" } },
+          { category: { $eq: "M-kurtis" } },
+          { category: { $eq: "W-saree" } },
+        ],
+      })
+      .sort({ currPrice: 1 })
+      .limit(1);
+    //console.log(min[0].currPrice);
+
+    const max = await Category.product
+      .find({
+        $or: [
+          { category: { $eq: "W-shirt" } },
+          { category: { $eq: "W-Trendy" } },
+          { category: { $eq: "W-kurtis" } },
+          { category: { $eq: "W-saree" } },
+        ],
+      })
+      .sort({ currPrice: -1 })
+      .limit(1);
+
+    const data = {
+      category: ["shirts", "kurtis", "trendy", "sarees"], //[shirts[0].category, trousers[0].category, trendy[0].category],
+      minPrice: min[0].currPrice,
+      maxPrice: max[0].currPrice,
+    };
+    res.send(data);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
   }
 };
 
@@ -563,10 +687,38 @@ const getMinPriceBag = async (req, res) => {
   }
 };
 
+const bagCategory = async (req, res) => {
+  try {
+    await connectDb();
+    const min = await Category.product
+      .find({
+        $or: [{ category: "W-Bags" }, { category: "M-Bags" }],
+      })
+      .sort({ currPrice: 1 })
+      .limit(1);
+
+    const max = await Category.product
+      .find({
+        $or: [{ category: "W-Bags" }, { category: "M-Bags" }],
+      })
+      .sort({ currPrice: -1 })
+      .limit(1);
+
+    const data = {
+      category: ["men", "women"],
+      minPrice: min[0].currPrice,
+      maxPrice: max[0].currPrice,
+    };
+    res.send(data);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
 const getWoWatch = async (req, res) => {
   try {
     await connectDb();
-
+ 
     let result = await Category.product.find({ category: "W-watch" });
     res.send(result);
   } catch (err) {
@@ -641,6 +793,34 @@ const getMinPriceWatch = async (req, res) => {
       .sort({ currPrice: 1 })
       .limit(1);
     res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+const watchCategory = async (req, res) => {
+  try {
+    await connectDb();
+    const min = await Category.product
+      .find({
+        $or: [{ category: "W-watch" }, { category: "M-watch" }],
+      })
+      .sort({ currPrice: 1 })
+      .limit(1);
+
+    const max = await Category.product
+      .find({
+        $or: [{ category: "W-watch" }, { category: "M-watch" }],
+      })
+      .sort({ currPrice: -1 })
+      .limit(1);
+
+    const data = {
+      category: ["men", "women"],
+      minPrice: min[0].currPrice,
+      maxPrice: max[0].currPrice,
+    };
+    res.send(data);
   } catch (err) {
     res.send(err);
   }
@@ -732,6 +912,7 @@ module.exports = {
   getChildMax,
   getChildMin,
   limitChildProPrice,
+  childCategory,
 
   getMenPro,
   getMenTrend,
@@ -740,6 +921,7 @@ module.exports = {
   getMenMax,
   getMenMin,
   limitMenProPrice,
+  menCategory,
 
   getWoPro,
   getWoTrend,
@@ -749,6 +931,7 @@ module.exports = {
   getWoMax,
   getWoMin,
   limitWoProPrice,
+  woCategory,
 
   getCategory,
   deleteCatById,
@@ -764,12 +947,13 @@ module.exports = {
   getBagFilterByPrice,
   getMaxPriceBag,
   getMinPriceBag,
-
+  bagCategory,
 
   getAllWatch,
   getWoWatch,
   getMenWatch,
   getWatchFilterByPrice,
   getMaxPriceWatch,
-  getMinPriceWatch
+  getMinPriceWatch,
+  watchCategory
 };

@@ -11,6 +11,8 @@ const {
   findUserByName,
   findUserByMail,
   getUsersList,
+  forgotPassword,
+  resetPassword
 } = require("../controllers/usercontroller.js");
 const authMiddeleware = require("../config/authMiddleware.js");
 const router = express.Router();
@@ -19,8 +21,10 @@ const router = express.Router();
 router.get("", getUsers);
 router.get("/find", findUser);
 
-router.post("/adduser", signUp);
+router.post("/register/user", signUp);
 router.post("/signin", signIn);
+router.put("/forgotpassword",forgotPassword)
+router.put("/resetpassword",resetPassword)
 
 router.put("/updateuser",authMiddeleware, updateUser);
 router.delete("/deleteuser",authMiddeleware, deleteUser);

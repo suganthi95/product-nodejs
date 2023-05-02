@@ -25,11 +25,31 @@ const product = mongoose.model("product", productSchema);
 
 const categorySchema = new Schema(
   {
-    type: String,
-    products:Array
+    //type: String,
+    category:Array,
+    minPrice:Number,
+    maxPrice:Number
   },
   { timestamps: true }
 );
 
+
 const category =mongoose.model("category",categorySchema);
-module.exports ={ product ,category};
+  
+const userSchema= new Schema(
+  {
+   
+    email: String,
+    password: String,
+    username: String,
+    resetLink:{
+       type :String,
+      default:''
+    }
+  },{timestamps :true}
+);
+
+const user =mongoose.model("user",userSchema);
+
+
+module.exports ={user, product ,category};
