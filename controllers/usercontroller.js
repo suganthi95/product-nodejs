@@ -1,4 +1,4 @@
-const connectDb = require("../../product-nodejs/config/database.js");
+const connectDb = require("../config/database");
 const {
   hashValidator,
   hashGenerate,

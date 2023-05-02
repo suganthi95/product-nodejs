@@ -1,5 +1,5 @@
-const connectDb = require("../config/database.js");
-const ObjectId = require("mongodb").ObjectId;
+const connectDb = require("../config/database");
+// const ObjectId = require("mongodb").ObjectId;
 const Category = require("../config/schema.js");
 
 const getChildrenPro = async (req, res) => {
