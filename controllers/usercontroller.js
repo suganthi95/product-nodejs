@@ -2,13 +2,13 @@ const connectDb = require("../config/database");
 const {
   hashValidator,
   hashGenerate,
-} = require("../../product-nodejs/config/hash.js");
+} = require("../config/hash.js");
 const {
   tokenGen,
   tokenGenerator,
   tokenValidator,
-} = require("../../product-nodejs/config/token.js");
-const User = require("../../product-nodejs/config/schema.js");
+} = require("../config/token.js");
+const User = require("../config/schema.js");
 require("dotenv").config();
 // const mail = require('../config/mail.js');
 
