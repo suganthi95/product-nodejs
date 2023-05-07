@@ -40,7 +40,7 @@ const trendySchema = new Schema(
     child:Array,
     insertedAt: {
       type:Date,
-      expires:'5m'
+      expires:'30m'
   }
 }
 );
