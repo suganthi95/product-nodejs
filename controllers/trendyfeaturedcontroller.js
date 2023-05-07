@@ -55,7 +55,7 @@ const randomPro = async () => {
     women: data[0],
     insertedAt: new Date(),
   }); 
- console.log(insertPro);
+ //console.log(insertPro);
 };
 
 schedule.scheduleJob("*/20 * * * *", randomPro);
