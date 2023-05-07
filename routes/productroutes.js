@@ -13,7 +13,8 @@ const {
   highToLowPrice,
   minPricePro,
   limitProPrice,
-  proByCat
+  proByCat,
+  getRandomData
   
 } = require("../controllers/productcontroller.js");
 const authMiddleware = require("../config/authMiddleware.js");
@@ -28,6 +29,7 @@ router.get("/price/max", highToLowPrice);
 router.get("/low/price/product", minPricePro);
 router.get("/price/limit", limitProPrice);
 router.get("/kids", proByCat);
+router.get("/random/trendy",getRandomData)
 
 
 

@@ -1,5 +1,4 @@
 const connectDb = require("../config/database");
-// const ObjectId = require("mongodb").ObjectId;
 const Category = require("../config/schema.js");
 
 const getChildrenPro = async (req, res) => {
@@ -44,15 +43,6 @@ const childCategory = async (req, res) => {
       })
       .sort({ currPrice: -1 })
       .limit(1);
-    //console.log(max[0].currPrice);
-    // const shirts = await Category.product.find({ category: "K-shirt" });
-    // const trousers = await Category.product.find({ category: "K-Trousers" });
-    // const  trendy =  await Category.product.find({ category: "K-Trendy" });
-    //   const child = await Category.category.insertMany({
-    //   category: [shirts[0].category, trousers[0].category, trendy[0].category],
-    //   minPrice:min[0].currPrice,
-    //   maxPrice:max[0].currPrice
-    //  });
 
     const data = {
       category: ["shirts", "trousers", "trendy"], //[shirts[0].category, trousers[0].category, trendy[0].category],
@@ -142,43 +132,29 @@ const getChildMin = async (req, res) => {
 const createChildCat = async (req, res) => {
   try {
     await connectDb();
-    const result = await Category.product.find({
+    const data = await Category.product.find({
       $or: [
-        { category: { $eq: "K-shirt" } },
-        { category: { $eq: "K-Trendy" } },
-        { category: { $eq: "K-Trousers" } },
+        { category: { $eq: "W-shirt" } },
+        { category: { $eq: "W-Trendy" } },
+        { category: { $eq: "W-kurtis" } },
+        { category: { $eq: "W-saree" } },
       ],
     });
+    //console.log(child);
+    const result = await Category.category.insertMany({
+      type: "women",
+      products: data,
+    });
 
-    const minPrice = await Category.product
-      .find({
-        $or: [
-          { category: { $eq: "K-shirt" } },
-          { category: { $eq: "K-Trendy" } },
-          { category: { $eq: "K-Trousers" } },
-        ],
-      })
-      .sort({ currPrice: 1 })
-      .limit(1);
-    const shirt = await Category.product.find({ category: "K-shirt" });
-    const trousers = await Category.product.find({ category: "K-Trousers" });
-    const trendy = await Category.product.find({ category: "K-Trendy" });
-
-    res.status(201).send([
-      {
-        category: [
-          { shirts: shirt },
-          { Trousers: trousers },
-          { Trendy: trendy },
-        ],
-      },
-      { maxPrice: maxPrice },
-      { miniPrice: minPrice },
-    ]);
+    res.send(result);
   } catch (err) {
     res.send(err);
   }
 };
+
+
+
+
 
 const limitChildProPrice = async (req, res) => {
   try {
@@ -331,46 +307,6 @@ const menCategory = async (req, res) => {
     res.status(400).json(err);
   }
 };
-// const createMenCat = async (req, res) => {
-//   try {
-//     await connectDb();
-//     const result = await Category.product.find({
-//       $or: [
-//         { category: { $eq: "K-shirt" } },
-//         { category: { $eq: "K-Trendy" } },
-//         { category: { $eq: "K-Trousers" } },
-//       ],
-//     });
-
-//     const minPrice = await Category.product
-//       .find({
-//         $or: [
-//           { category: { $eq: "K-shirt" } },
-//           { category: { $eq: "K-Trendy" } },
-//           { category: { $eq: "K-Trousers" } },
-//         ],
-//       })
-//       .sort({ currPrice: 1 })
-//       .limit(1);
-//     const shirt = await Category.product.find({ category: "K-shirt" });
-//     const trousers = await Category.product.find({ category: "K-Trousers" });
-//     const trendy = await Category.product.find({ category: "K-Trendy" });
-
-//     res.status(201).send([
-//       {
-//         category: [
-//           { shirts: shirt },
-//           { Trousers: trousers },
-//           { Trendy: trendy },
-//         ],
-//       },
-//       { maxPrice: maxPrice },
-//       { miniPrice: minPrice },
-//     ]);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// };
 
 const limitMenProPrice = async (req, res) => {
   try {
@@ -420,9 +356,9 @@ const woCategory = async (req, res) => {
     const min = await Category.product
       .find({
         $or: [
-          { category: { $eq: "M-shirt" } },
-          { category: { $eq: "M-Trendy" } },
-          { category: { $eq: "M-kurtis" } },
+          { category: { $eq: "W-shirt" } },
+          { category: { $eq: "W-Trendy" } },
+          { category: { $eq: "W-kurtis" } },
           { category: { $eq: "W-saree" } },
         ],
       })
@@ -538,46 +474,7 @@ const getWoMin = async (req, res) => {
   }
 };
 
-// const createMenCat = async (req, res) => {
-//   try {
-//     await connectDb();
-//     const result = await Category.product.find({
-//       $or: [
-//         { category: { $eq: "K-shirt" } },
-//         { category: { $eq: "K-Trendy" } },
-//         { category: { $eq: "K-Trousers" } },
-//       ],
-//     });
 
-//     const minPrice = await Category.product
-//       .find({
-//         $or: [
-//           { category: { $eq: "K-shirt" } },
-//           { category: { $eq: "K-Trendy" } },
-//           { category: { $eq: "K-Trousers" } },
-//         ],
-//       })
-//       .sort({ currPrice: 1 })
-//       .limit(1);
-//     const shirt = await Category.product.find({ category: "K-shirt" });
-//     const trousers = await Category.product.find({ category: "K-Trousers" });
-//     const trendy = await Category.product.find({ category: "K-Trendy" });
-
-//     res.status(201).send([
-//       {
-//         category: [
-//           { shirts: shirt },
-//           { Trousers: trousers },
-//           { Trendy: trendy },
-//         ],
-//       },
-//       { maxPrice: maxPrice },
-//       { miniPrice: minPrice },
-//     ]);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// };
 
 const limitWoProPrice = async (req, res) => {
   try {
@@ -718,7 +615,7 @@ const bagCategory = async (req, res) => {
 const getWoWatch = async (req, res) => {
   try {
     await connectDb();
- 
+
     let result = await Category.product.find({ category: "W-watch" });
     res.send(result);
   } catch (err) {
@@ -904,7 +801,80 @@ const removeProduct = async (req, res) => {
   }
 };
 
+
+
+
+  
+  
+   
+ 
+// const randomData = async (req,res)=>{
+//   try{
+//   await connectDb();
+//   let cachedDocId = null;
+//   async ()=>{ 
+//   let doc = null;
+    
+//     if (cachedDocId) {
+//       doc = await getDocById(cachedDocId);
+//     }
+  
+//     if (!doc) {
+//       doc = await getRandomDoc();
+//       cachedDocId = doc._id;
+//     }
+//   console.log(doc);
+//     res.send(doc);
+  
+  
+//   setInterval(getRandomDoc, 10000);}
+// }catch(err){
+//   console.log(err);
+// }
+// };
+  
+//   async function getRandomDoc() {
+//     let pipeline = [{$sample: {size: 1}}];
+//     let doc  = await Category.product.aggregate(pipeline);
+    
+//     if (doc) {
+//       //console.log(doc);
+//       return doc;
+//     } else {
+//       console.log('No documents found.');
+//       return null;
+//     }
+//   }
+  
+//   async function getDocById(id) {
+//     let doc = await Category.product.findOne({_id: id});
+  
+//     if (doc) {
+//       //console.log(doc);
+//       return doc;
+//     } else {
+//       console.log(`No document found with ID: ${id}`);
+//       return null;
+//     }
+//   }
+ 
+
+
+  // client.connect((err) => {
+  //   if (err) {
+  //     console.error(err);
+  //   } else {
+  //     collection = client.db("test").collection("myCollection");
+       // call every 10 minutes
+      //app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+   // }
+//}
+//)
+//}
+
+
 module.exports = {
+ // randomData,
   getChildrenPro,
   getChildTrend,
   getChildShirt,
@@ -913,6 +883,7 @@ module.exports = {
   getChildMin,
   limitChildProPrice,
   childCategory,
+ 
 
   getMenPro,
   getMenTrend,
@@ -955,5 +926,5 @@ module.exports = {
   getWatchFilterByPrice,
   getMaxPriceWatch,
   getMinPriceWatch,
-  watchCategory
+  watchCategory,
 };

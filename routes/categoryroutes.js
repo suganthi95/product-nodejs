@@ -49,11 +49,13 @@ const {
   getWatchFilterByPrice,
   getMaxPriceWatch,
   getMinPriceWatch,
-  watchCategory
-  
+  watchCategory,
 } = require("../controllers/categorycontroller.js");
+
 //const authMiddleware = require("../config/authMiddleware.js")
 const router = express.Router();
+
+
 
 router.get("/children/all", getChildrenPro);
 router.get("/children/trendy", getChildTrend);
@@ -64,6 +66,7 @@ router.get("/children/minprice", getChildMin);
 router.get("/children/filterbyprice", limitChildProPrice);
 router.get("/categories/children", childCategory);
 
+
 router.get("/women/all", getWoPro);
 router.get("/women/trendy", getWoTrend);
 router.get("/women/shirts", getWoShirt);
@@ -72,7 +75,7 @@ router.get("/women/sarees", getWoSaree);
 router.get("/women/maxprice", getWoMax);
 router.get("/women/minprice", getWoMin);
 router.get("/women/filterbyprice", limitWoProPrice);
-router.get("/categories/women", woCategory);
+router.get("/women/categories", woCategory);
 
 
 router.get("/men/all", getMenPro);
@@ -82,7 +85,7 @@ router.get("/men/trousers", getMenTrouser);
 router.get("/men/maxprice", getMenMax);
 router.get("/men/minprice", getMenMin);
 router.get("/men/filterbyprice", limitMenProPrice);
-router.get("/categories/men", menCategory);
+router.get("/men/categories", menCategory);
 
 
  
@@ -92,7 +95,8 @@ router.get("/bags/women", getWoBags);
 router.get("/bags/filterbyprice", getBagFilterByPrice);
 router.get("/bags/maxprice", getMaxPriceBag);
 router.get("/bags/minprice", getMinPriceBag);
-router.get("/categories/bag", bagCategory);
+router.get("/bags/categories", bagCategory);
+
 
 
 router.get("/watches/all", getAllWatch);

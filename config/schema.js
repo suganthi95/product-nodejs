@@ -25,16 +25,29 @@ const product = mongoose.model("product", productSchema);
 
 const categorySchema = new Schema(
   {
-    //type: String,
-    category:Array,
-    minPrice:Number,
-    maxPrice:Number
+    type: String,
+    products:Array,
   },
   { timestamps: true }
 );
-
-
 const category =mongoose.model("category",categorySchema);
+
+
+const trendySchema = new Schema(
+  {
+    men:Array,
+    women:Array,
+    child:Array,
+    insertedAt: {
+      type:Date,
+      expires:'3m'
+  }
+}
+);
+
+const trendyProduct =mongoose.model("trendyProduct",trendySchema);
+
+
   
 const userSchema= new Schema(
   {
@@ -52,4 +65,4 @@ const userSchema= new Schema(
 const user =mongoose.model("user",userSchema);
 
 
-module.exports ={user, product ,category};
+module.exports ={user, product ,category,trendyProduct};

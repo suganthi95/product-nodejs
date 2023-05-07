@@ -119,6 +119,30 @@ const limitProPrice = async (req, res) => {
   }
 };
 
+
+const getRandomData = async (req,res)=>{
+ try{
+  // await connectDb();
+ setInterval(myTimer, 3000);
+
+ async function myTimer() {
+  await connectDb();
+  const product = await Product.product.aggregate([
+    {
+      $sample: {size:1}
+  }
+]);
+   console.log(product);
+
+    res.send( product);
+  
+  } 
+}catch(err){
+  res.send(err)
+}
+}
+
+
 const findProductByName = async (req, res) => {
   let products = await connectDb();
   let product = await products
@@ -157,5 +181,6 @@ module.exports = {
   highToLowPrice,
   minPricePro,
   limitProPrice,
-  proByCat
+  proByCat,
+  getRandomData
 };

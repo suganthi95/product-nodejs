@@ -21,6 +21,7 @@
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.3",
     "mongosh": "^1.8.0",
+    "node-schedule": "^2.1.1",
     "nodemon": "^2.0.22",
     "uuid": "^9.0.0"
   }
