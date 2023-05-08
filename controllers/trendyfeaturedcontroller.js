@@ -58,7 +58,7 @@ const randomPro = async () => {
  //console.log(insertPro);
 };
 
-schedule.scheduleJob("*/15 * * * *", randomPro);
+schedule.scheduleJob("* /15 * * * *", randomPro);
 
 
 
