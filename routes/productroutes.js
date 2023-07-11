@@ -20,7 +20,7 @@ const {
 const authMiddleware = require("../helper/authMiddleware.js");
 const router = express.Router();
 
-router.get("/productlist", authMiddleware, getProduct);
+router.get("/productlist", getProduct);
 //router.get("/find", findProduct);
 router.post("/addproduct", addProduct);
 router.get("/findbyid",  findProductById);
