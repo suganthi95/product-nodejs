@@ -17,10 +17,10 @@ const {
   getRandomData
   
 } = require("../controllers/productcontroller.js");
-const authMiddleware = require("../config/authMiddleware.js");
+const authMiddleware = require("../helper/authMiddleware.js");
 const router = express.Router();
 
-router.get("/productlist", getProduct);
+router.get("/productlist", authMiddleware, getProduct);
 //router.get("/find", findProduct);
 router.post("/addproduct", addProduct);
 router.get("/findbyid",  findProductById);

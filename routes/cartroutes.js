@@ -10,7 +10,7 @@ const {
   updateCartList,
   deleteCartList,
 } = require("../controllers/cartcontroller.js");
-const authMiddleware = require("../config/authMiddleware.js");
+const authMiddleware = require("../helper/authMiddleware.js");
 
 const router = express.Router();
 

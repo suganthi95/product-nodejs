@@ -55,10 +55,8 @@ const userSchema= new Schema(
     email: String,
     password: String,
     username: String,
-    resetLink:{
-       type :String,
-      default:''
-    }
+    refreshtoken:String
+    
   },{timestamps :true}
 );
 

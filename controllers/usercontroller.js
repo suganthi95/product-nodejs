@@ -2,14 +2,19 @@ const connectDb = require("../config/database");
 const {
   hashValidator,
   hashGenerate,
-} = require("../config/hash.js");
+} = require("../helper/hash.js");
 const {
   tokenGen,
   tokenGenerator,
   tokenValidator,
-} = require("../config/token.js");
+  refreshtokenValidator,
+  refreshToken,
+} = require("../helper/token.js");
 const User = require("../config/schema.js");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
+const JWT_KEY = "SFWERgjEYJSRATHafathrsr";
+const JWT_REFRESH_KEY = "ABCDEFGHIJKLlkjihgfedcba";
 // const mail = require('../config/mail.js');
 
 const mailgun = require("mailgun-js");
@@ -39,28 +44,68 @@ const signUp = async (req, res) => {
 };
 
 const signIn = async (req, res) => {
+  const {email, password} =req.body;
   try {
     await connectDb();
-    const existingUser = await User.user.findOne({ email: req.body.email });
+    const existingUser = await User.user.findOne({email});
     if (!existingUser) {
       res.send("invalid mail_id");
     } else {
       const checkUser = await hashValidator(
-        req.body.password,
+         password,
         existingUser.password
       );
       if (!checkUser) {
         res.send("invalid password");
       } else {
-        const token = await tokenGenerator(existingUser.email);
-
-        res.send(token);
+        const emailid =email
+        console.log(email);
+        const token = jwt.sign({emailid},  JWT_KEY, { expiresIn: '1m' });
+        const reToken = jwt.sign({emailid}, JWT_REFRESH_KEY, { expiresIn: '2m' });
+        console.log("reToken: ", reToken);
+       const updateToken = await User.user.findOneAndUpdate({ email: req.body.email }, {refreshtoken:reToken});
+        
+        res.status(200).json({accesstoken:token,
+                             refreshtoken: reToken});
       }
     }
   } catch (err) {
-    res.send(err);
+    console.log(err);
+    res.status(400).json(err);
   }
 };
+
+
+const token= async(req,res)=>{
+    const refreshToken = req.body.refreshtoken;
+    await connectDb();
+      if (refreshToken == null) {
+         res.status(401).json("Plese enter the token");
+      }
+      
+      const existingToken= await User.user.find({refreshtoken:refreshToken});
+      if(existingToken){
+
+         jwt.verify(refreshToken, JWT_REFRESH_KEY, async (err, user) => {
+        if (err) {
+           res.status(400).json("invalid token");
+        }else{
+        const token =await tokenGenerator(existingToken.email);
+        res.status(200).json({accesstoken:token});
+        }
+      });
+    }else{
+      res.status(201).json("Token expired. Please login")
+    }
+    }; 
+     
+
+
+
+
+
+
+
 
 const forgotPassword = async (req, res) => {
   try {
@@ -169,9 +214,16 @@ const findUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  let data = await connectDb();
-  let result = await data.collection("users").find().toArray();
+  
+  try{
+    await connectDb();
+  let result = await User.user.find({});
+  console.log(result);
   res.send(result);
+  }catch(error){
+    console.log(error);
+    res.send(error);
+  }
 };
 
 const getUsersList = async (req, res) => {
@@ -225,6 +277,7 @@ module.exports = {
   getUsersList,
   forgotPassword,
   resetPassword,
+  token
 };
 
 /*const formData = require('form-data');

@@ -33,4 +33,5 @@ app.use("/api/new", trendyRoute);
 //         console.log("listening for requests");
 //     })
 // }
+
 app.listen(PORT, () => console.log(`Listening the port :${PORT}`));

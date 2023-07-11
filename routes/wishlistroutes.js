@@ -10,7 +10,7 @@ const {addProduct,
     listByUserMail,
     listByWhishListId
     } = require ("../controllers/wishlistcontroller.js");
-const authMiddleware= require("../config/authMiddleware.js") 
+const authMiddleware= require("../helper/authMiddleware.js") 
 
 const router = express.Router();
 

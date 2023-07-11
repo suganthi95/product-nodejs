@@ -9,7 +9,7 @@ const {
   cancelOrder,
   cancelOrder_pro,
 } = require("../controllers/ordercontroller.js");
-const authMiddleware = require("../config/authMiddleware.js") ;
+const authMiddleware = require("../helper/authMiddleware.js") ;
 
 const router = express.Router();
 

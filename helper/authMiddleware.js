@@ -1,13 +1,15 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const JWT_KEY = "SFWERgjEYJSRATHafathrsr";
+const JWT_REFRESH_KEY = "ABCDEFGHIJKLlkjihgfedcba";
 
-const key = process.env.JWT_KEY;
-const authMiddeleware = async (req, res, next) => {
-  if (req.headers.authorization.startsWith("Bearer")) {
+
+const authMiddeleware = async (req, res, next) => {   //.startsWith("Bearer")
+  if (req.headers.authorization) {
     let token = await req.headers.authorization.split(" ")[1];
     try {
       if (token) {
-        const verify = await jwt.verify(token,`${key}` );
+        const verify = jwt.verify(token,JWT_KEY );
       }
       next();
     } catch (err) {
