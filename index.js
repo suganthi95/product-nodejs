@@ -11,6 +11,7 @@ const orderRoute = require("./routes/orderroutes.js");
 const categoryRoute = require("./routes/categoryroutes.js");
 const trendyRoute = require("./routes/trendyfeaturedroutes.js")
 const cookieParser = require("cookie-parser");
+const cors = require('cors');
 
 const PORT = 4000;
 const app = express();
@@ -34,4 +35,7 @@ app.use("/api/new", trendyRoute);
 //     })
 // }
 
+app.use(cors({
+    origin:"http://localhost:4000"
+}));
 app.listen(PORT, () => console.log(`Listening the port :${PORT}`));
