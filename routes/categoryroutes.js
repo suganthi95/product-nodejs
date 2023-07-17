@@ -57,7 +57,7 @@ const router = express.Router();
 var cors = require('cors');
  
 var corsOptions = {
-  origin: 'http://localhost:5500S',
+  origin: 'http://localhost:4000',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
