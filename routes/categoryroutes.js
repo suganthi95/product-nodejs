@@ -54,73 +54,67 @@ const {
 
 //const authMiddleware = require("../config/authMiddleware.js")
 const router = express.Router();
-var cors = require('cors');
- 
-var corsOptions = {
-  origin: 'http://localhost:4000',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
 
 
-router.get("/children/all", cors(corsOptions), getChildrenPro);
-router.get("/children/trendy",cors(corsOptions), getChildTrend);
-router.get("/children/shirts",cors(corsOptions), getChildShirt);
-router.get("/children/trousers",cors(corsOptions), getChildTrouser);
-router.get("/children/maxprice", cors(corsOptions),getChildMax);
-router.get("/children/minprice",cors(corsOptions), getChildMin);
-router.get("/children/filterbyprice",cors(corsOptions), limitChildProPrice);
-router.get("/categories/children",cors(corsOptions),childCategory);
+router.get("/children/all", getChildrenPro);
+router.get("/children/trendy", getChildTrend);
+router.get("/children/shirts", getChildShirt);
+router.get("/children/trousers", getChildTrouser);
+router.get("/children/maxprice", getChildMax);
+router.get("/children/minprice", getChildMin);
+router.get("/children/filterbyprice", limitChildProPrice);
+router.get("/categories/children",childCategory);
 
 
-router.get("/women/all",cors(corsOptions), getWoPro);
-router.get("/women/trendy",cors(corsOptions), getWoTrend);
-router.get("/women/shirts",cors(corsOptions), getWoShirt);
-router.get("/women/kurtis",cors(corsOptions), getWoKurti);
-router.get("/women/sarees", cors(corsOptions),getWoSaree);
-router.get("/women/maxprice",cors(corsOptions), getWoMax);
-router.get("/women/minprice", cors(corsOptions),getWoMin);
-router.get("/women/filterbyprice",cors(corsOptions), limitWoProPrice);
-router.get("/women/categories", cors(corsOptions),woCategory);
+router.get("/women/all", getWoPro);
+router.get("/women/trendy", getWoTrend);
+router.get("/women/shirts", getWoShirt);
+router.get("/women/kurtis", getWoKurti);
+router.get("/women/sarees", getWoSaree);
+router.get("/women/maxprice", getWoMax);
+router.get("/women/minprice", getWoMin);
+router.get("/women/filterbyprice", limitWoProPrice);
+router.get("/women/categories", woCategory);
 
 
-router.get("/men/all",cors(corsOptions), getMenPro);
-router.get("/men/trendy",cors(corsOptions), getMenTrend);
-router.get("/men/shirts", cors(corsOptions),getMenShirt);
-router.get("/men/trousers",cors(corsOptions), getMenTrouser);
-router.get("/men/maxprice",cors(corsOptions), getMenMax);
-router.get("/men/minprice",cors(corsOptions), getMenMin);
-router.get("/men/filterbyprice",cors(corsOptions), limitMenProPrice);
-router.get("/men/categories", cors(corsOptions),menCategory);
+router.get("/men/all", getMenPro);
+router.get("/men/trendy", getMenTrend);
+router.get("/men/shirts", getMenShirt);
+router.get("/men/trousers", getMenTrouser);
+router.get("/men/maxprice", getMenMax);
+router.get("/men/minprice", getMenMin);
+router.get("/men/filterbyprice",limitMenProPrice);
+router.get("/men/categories", menCategory);
 
 
  
-router.get("/bags/all",cors(corsOptions), getAllBags);
-router.get("/bags/men",cors(corsOptions), getMenBags);
-router.get("/bags/women", cors(corsOptions),getWoBags);
-router.get("/bags/filterbyprice",cors(corsOptions), getBagFilterByPrice);
-router.get("/bags/maxprice",cors(corsOptions), getMaxPriceBag);
-router.get("/bags/minprice",cors(corsOptions), getMinPriceBag);
-router.get("/bags/categories",cors(corsOptions), bagCategory);
+router.get("/bags/all", getAllBags);
+router.get("/bags/men", getMenBags);
+router.get("/bags/women",getWoBags);
+router.get("/bags/filterbyprice", getBagFilterByPrice);
+router.get("/bags/maxprice", getMaxPriceBag);
+router.get("/bags/minprice", getMinPriceBag);
+router.get("/bags/categories", bagCategory);
 
 
 
-router.get("/watches/all",cors(corsOptions), getAllWatch);
-router.get("/watches/men",cors(corsOptions), getMenWatch);
-router.get("/watches/women",cors(corsOptions), getWoWatch);
-router.get("/watches/filterbyprice",cors(corsOptions), getWatchFilterByPrice);
-router.get("/watches/maxprice",cors(corsOptions), getMaxPriceWatch);
-router.get("/watches/minprice",cors(corsOptions), getMinPriceWatch);
-router.get("/categories/watch",cors(corsOptions), watchCategory);
+router.get("/watches/all", getAllWatch);
+router.get("/watches/men",getMenWatch);
+router.get("/watches/women", getWoWatch);
+router.get("/watches/filterbyprice",getWatchFilterByPrice);
+router.get("/watches/maxprice", getMaxPriceWatch);
+router.get("/watches/minprice", getMinPriceWatch);
+router.get("/categories/watch", watchCategory);
 
 
 
 
-router.get("/list/:type",cors(corsOptions), getCategory);
-router.delete("/remove_category",cors(corsOptions), deleteCatById);
-router.put("/addproduct_category",cors(corsOptions), addProduct);
-router.get("/categorybyname",cors(corsOptions), getCategoryId);
-router.put("/remove_product",cors(corsOptions), removeProduct);
-router.get("/addsubcategory", cors(corsOptions),createSubCategory);
-router.get("/children/product",cors(corsOptions),createChildCat)
+router.get("/list/:type", getCategory);
+router.delete("/remove_category", deleteCatById);
+router.put("/addproduct_category", addProduct);
+router.get("/categorybyname", getCategoryId);
+router.put("/remove_product", removeProduct);
+router.get("/addsubcategory", createSubCategory);
+router.get("/children/product",createChildCat)
 
 module.exports = router;
