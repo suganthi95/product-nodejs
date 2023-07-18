@@ -16,6 +16,20 @@ const cors = require('cors');
 const PORT = 4000;
 const app = express();
 
+app.use(cors());
+
+
+//CORS-HEADERS- Required for cross origin and cross server communication
+app.use((req, res, next) => {
+  res.setHeader('Access-Control_Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers',
+    'Origin,X-Requested-With,Content-Type,Accept,Authorization');
+
+  res.setHeader('Access-Control-Allow-Methods', 'GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS');
+  next();
+});
+
+//app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -35,11 +49,5 @@ app.use("/api/new", trendyRoute);
 //     })
 // }
 
-
-var corsOptions = {
-    origin: 'http://localhost:4000',
-    optionsSuccessStatus: 200 
-  }
-app.use(cors(corsOptions));
 
 app.listen(PORT, () => console.log(`Listening the port :${PORT}`));
