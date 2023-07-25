@@ -19,7 +19,7 @@ const authMiddeleware = require("../helper/authMiddleware.js");
 const router = express.Router();
 
 
-router.get("",authMiddeleware, getUsers);
+router.get("", getUsers);
 router.get("/find", findUser);
 
 router.post("/register/user", signUp);

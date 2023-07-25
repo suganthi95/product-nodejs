@@ -1,6 +1,7 @@
 const { Decimal128 } = require("mongodb");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const ObjectId = require("mongodb").ObjectId;
 
 const productSchema = new Schema(
   {
@@ -62,5 +63,13 @@ const userSchema= new Schema(
 
 const user =mongoose.model("user",userSchema);
 
+const cartSchema = new Schema(
+  {
+        user_id:String,
+        products:Array,
+        user_email_id:String
+  },{timestamps :true}
+) 
 
-module.exports ={user, product ,category,trendyProduct};
+const cart =mongoose.model("cart", cartSchema)
+module.exports ={user, product ,category,trendyProduct, cart};
