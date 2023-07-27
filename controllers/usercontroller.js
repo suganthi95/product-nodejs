@@ -49,14 +49,14 @@ const signIn = async (req, res) => {
     await connectDb();
     const existingUser = await User.user.findOne({email});
     if (!existingUser) {
-      res.send("invalid mail_id");
+      res.status(201).json("invalid mail_id");
     } else {
       const checkUser = await hashValidator(
          password,
         existingUser.password
       );
       if (!checkUser) {
-        res.send("invalid password");
+        res.status(201).json("invalid password");
       } else {
         const emailid =email
         console.log(email);

@@ -72,4 +72,15 @@ const cartSchema = new Schema(
 ) 
 
 const cart =mongoose.model("cart", cartSchema)
-module.exports ={user, product ,category,trendyProduct, cart};
+
+
+const orderSchema =new Schema({
+  user_email_id: String,
+  products: Array,
+  subtotal:Number,
+  totalamt:Number,
+  address:String,
+  status:String
+}) 
+const order = mongoose.model("order",orderSchema)
+module.exports ={user, product ,category,trendyProduct, cart, order};

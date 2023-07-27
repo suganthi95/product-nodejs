@@ -1,5 +1,6 @@
 const connectDb = require("../config/database.js");
 const ObjectId = require("mongodb").ObjectId;
+const Order = require("../config/schema.js")
 
 const getList = async (req, res) => {
   const data = await connectDb();
@@ -13,28 +14,33 @@ const getList = async (req, res) => {
 
 
 const addOrder = async (req, res) => {
-  let data = await connectDb();
-  const list = await data.collection("orders").insertMany([
+  try{
+  await connectDb();
+  const list = await Order.order.insertMany([
     {
-      user_id: new ObjectId(req.body.user_id),
+      user_email_id: req.body.user_email_id,
       products: req.body.products,
       subtotal: req.body.subtotal,
       totalamt: req.body.amount,
       address: req.body.address,
-      orderdAt: new Date(),
+      orderedAt: new Date(),
       status: req.body.status
     }
   ]);
-  res.send(list);
+  res.status(200).json(list);
+}catch(error){
+  res.status(400).json(error)
+}
 };
 
 const getCancelOrderList = async (req, res) => {
-  const data = await connectDb();
-  const list = await data
-    .collection("orders")
-    .find({status:"cancelled"},{projection:{products:1,status:1,_id:0}})
-    .toArray();
-  res.send(list);
+  try{
+   await connectDb();
+  const list = await Order.order.findOne({status:"cancelled"},{projection:{products:1,status:1,_id:0}});
+  res.status(200).json(list);
+  }catch(error){
+    res.status(400).json(error)
+  }
 };
 
 
@@ -60,12 +66,14 @@ const listByUserId = async (req, res) => {
 };
 
 const cancelOrder = async (req, res) => {
-  const data = await connectDb();
-  const list = await data
-    .collection("orders")
-    .updateOne({ _id: new ObjectId(req.body.order_id)  },
+  try{
+  await connectDb();
+  const list = await Order.order.findOneAndUpdate({ _id: new ObjectId(req.body.order_id)  },
     { $set: { status:"cancelled" } }); // or {$set:{status:req.body.status}}
-  res.send(list);
+  res.status(200).json(list);
+  }catch(error){
+    res.status(400).json(error)
+  }
 };
 
 const refundOrder = async (req, res) => {
