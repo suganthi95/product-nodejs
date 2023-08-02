@@ -20,7 +20,7 @@ router.get("/getlist",  getCartList);
 router.patch("/updatelist",  updateCartList);
 router.delete("/deletelist", deleteCartList);
 router.get("/listbyuserid",  getListByUserId);
-router.get("/listbyusermail",  getListByUserMailId);
+router.get("/listbyusermail/:user_email_id",  getListByUserMailId);
 router.put("/deleteproduct",deleteProduct);
 
 module.exports = router;

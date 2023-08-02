@@ -90,9 +90,9 @@ const getListByUserId = async (req, res) => {
 
 const getListByUserMailId = async (req, res) => {
   try{
-    const email = req.body.user_email_id;
+    const email = req.params.user_email_id;
    await connectDb();
-    let list = await Product.cart.find({user_email_id:email},{projection:{user_email_id:0,}});
+    let list = await Product.cart.find({user_email_id:email});
         let reArray =[];
         list.forEach(obj =>{
           reArray.push(obj.products[0])
