@@ -1,8 +1,5 @@
 const connectDb = require("../config/database");
-const {
-  hashValidator,
-  hashGenerate,
-} = require("../helper/hash.js");
+const { hashValidator, hashGenerate } = require("../helper/hash.js");
 const {
   tokenGen,
   tokenGenerator,
@@ -44,29 +41,38 @@ const signUp = async (req, res) => {
 };
 
 const signIn = async (req, res) => {
-  const {email, password} =req.body;
+  const { email, password } = req.body;
   try {
     await connectDb();
-    const existingUser = await User.user.findOne({email});
+    const existingUser = await User.user.findOne({ email });
+    console.log(existingUser);
     if (!existingUser) {
       res.status(201).json("invalid mail_id");
     } else {
-      const checkUser = await hashValidator(
-         password,
-        existingUser.password
-      );
+      const checkUser = await hashValidator(password, existingUser.password);
       if (!checkUser) {
         res.status(201).json("invalid password");
       } else {
-        const emailid =email
+        const emailid = email;
         console.log(email);
-        const token = jwt.sign({emailid},  JWT_KEY, { expiresIn: '1m' });
-        const reToken = jwt.sign({emailid}, JWT_REFRESH_KEY, { expiresIn: '2m' });
+        const token = jwt.sign({ emailid }, JWT_KEY, { expiresIn: "1m" });
+        const reToken = jwt.sign({ emailid }, JWT_REFRESH_KEY, {
+          expiresIn: "2m",
+        });
         console.log("reToken: ", reToken);
-       const updateToken = await User.user.findOneAndUpdate({ email: req.body.email }, {refreshtoken:reToken});
-        
-        res.status(200).json({accesstoken:token,
-                             refreshtoken: reToken});
+        const updateToken = await User.user.findOneAndUpdate(
+          { email: req.body.email },
+          { refreshtoken: reToken }
+        );
+
+        res
+          .status(200)
+          .json({
+            username: existingUser.username,
+            email: emailid,
+            accesstoken: token,
+            refreshtoken: reToken,
+          });
       }
     }
   } catch (err) {
@@ -75,37 +81,27 @@ const signIn = async (req, res) => {
   }
 };
 
+const token = async (req, res) => {
+  const refreshToken = req.body.refreshtoken;
+  await connectDb();
+  if (refreshToken == null) {
+    res.status(401).json("Plese enter the token");
+  }
 
-const token= async(req,res)=>{
-    const refreshToken = req.body.refreshtoken;
-    await connectDb();
-      if (refreshToken == null) {
-         res.status(401).json("Plese enter the token");
+  const existingToken = await User.user.find({ refreshtoken: refreshToken });
+  if (existingToken) {
+    jwt.verify(refreshToken, JWT_REFRESH_KEY, async (err, user) => {
+      if (err) {
+        res.status(400).json("invalid token");
+      } else {
+        const token = await tokenGenerator(existingToken.email);
+        res.status(200).json({ accesstoken: token });
       }
-      
-      const existingToken= await User.user.find({refreshtoken:refreshToken});
-      if(existingToken){
-
-         jwt.verify(refreshToken, JWT_REFRESH_KEY, async (err, user) => {
-        if (err) {
-           res.status(400).json("invalid token");
-        }else{
-        const token =await tokenGenerator(existingToken.email);
-        res.status(200).json({accesstoken:token});
-        }
-      });
-    }else{
-      res.status(201).json("Token expired. Please login")
-    }
-    }; 
-     
-
-
-
-
-
-
-
+    });
+  } else {
+    res.status(201).json("Token expired. Please login");
+  }
+};
 
 const forgotPassword = async (req, res) => {
   try {
@@ -128,27 +124,28 @@ const forgotPassword = async (req, res) => {
            <p> ${url}/resetpassword  ${token}</p>`,
       };
 
-      const result = await User.user.updateOne({email:req.body.email},{resetLink: token }); 
-        if (!result) {
-          return res.status(400).json({ err: "reset password link error" });
-        } else {
-    const resultMail= await mg.messages().send(data); 
-    // console.log((resultMail));
-            if (!resultMail) {
-              return res.json({ error: error.message });
-            }
-            return res.status(201).json({
-              message: "Email has beed sent, kindly follow the instruction",
-             resetLink: token
-            });
-          };
+      const result = await User.user.updateOne(
+        { email: req.body.email },
+        { resetLink: token }
+      );
+      if (!result) {
+        return res.status(400).json({ err: "reset password link error" });
+      } else {
+        const resultMail = await mg.messages().send(data);
+        // console.log((resultMail));
+        if (!resultMail) {
+          return res.json({ error: error.message });
         }
-    } catch (err) {
+        return res.status(201).json({
+          message: "Email has beed sent, kindly follow the instruction",
+          resetLink: token,
+        });
+      }
+    }
+  } catch (err) {
     res.send(err);
   }
 };
-
-
 
 const resetPassword = async (req, res) => {
   try {
@@ -163,7 +160,7 @@ const resetPassword = async (req, res) => {
       } else {
         const data = await User.user.findOneAndUpdate(
           { resetLink: req.body.resetLink },
-          { password: hashedPassword ,resetLink:'' }
+          { password: hashedPassword, resetLink: "" }
         );
         console.log(data);
         res.send("password reset success");
@@ -214,13 +211,12 @@ const findUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  
-  try{
+  try {
     await connectDb();
-  let result = await User.user.find({});
-  console.log(result);
-  res.send(result);
-  }catch(error){
+    let result = await User.user.find({});
+    console.log(result);
+    res.send(result);
+  } catch (error) {
     console.log(error);
     res.send(error);
   }
@@ -277,7 +273,7 @@ module.exports = {
   getUsersList,
   forgotPassword,
   resetPassword,
-  token
+  token,
 };
 
 /*const formData = require('form-data');
