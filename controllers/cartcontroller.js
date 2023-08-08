@@ -53,9 +53,9 @@ const deleteCartList = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try{   await connectDb();
    await Product.cart.findOneAndDelete(
-      { products: { _id: req.body.product_id } } 
+      {_id: new ObjectId(req.body.cart_id)}
     );
-  res.send(`Product with ID:${req.body.product_id} deleted `);
+  res.send(`Product deleted from cart `);
     }catch(err){
       res.send(err);
     }
@@ -94,7 +94,9 @@ const getListByUserMailId = async (req, res) => {
     let list = await Product.cart.find({user_email_id:email});
         let reArray =[];
         list.forEach(obj =>{
-          reArray.push(obj.products[0]);
+          let cart_id = obj._id;
+          console.log("cart_id", cart_id);
+          reArray.push({...obj.products[0],... {cart_id}});
         });
             console.log(reArray);
         res.status(200).json(reArray);
