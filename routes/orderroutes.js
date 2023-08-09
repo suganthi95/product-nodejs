@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get("/orderlist",authMiddleware,  getList);
 
-router.post("/addorder",authMiddleware,  addOrder);
+router.post("/addorder", addOrder);
 
 router.get("/listbyuserid",authMiddleware,  listByUserId);
 router.get("/cancelledorder",authMiddleware,  getCancelOrderList);

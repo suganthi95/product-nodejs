@@ -19,15 +19,14 @@ const addOrder = async (req, res) => {
   const list = await Order.order.insertMany([
     {
       user_email_id: req.body.user_email_id,
-      products: req.body.products,
-      subtotal: req.body.subtotal,
-      totalamt: req.body.amount,
-      address: req.body.address,
-      orderedAt: new Date(),
-      status: req.body.status
+      product_id: req.body.product_id,
+      product_title:req.body.title,
+      price: req.body.price,
+      quantity:req.body.quantity,
+      status: "Ordered"
     }
   ]);
-  res.status(200).json(list);
+  res.status(200).json("order placed successfully....!");
 }catch(error){
   res.status(400).json(error)
 }

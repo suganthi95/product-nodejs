@@ -76,11 +76,12 @@ const cart =mongoose.model("cart", cartSchema)
 
 const orderSchema =new Schema({
   user_email_id: String,
-  products: Array,
-  subtotal:Number,
-  totalamt:Number,
-  address:String,
+  product_id:String,
+  product_title:String,
+  price:Number,
+  quantity:Number,
   status:String
+
 }) 
 const order = mongoose.model("order",orderSchema)
 module.exports ={user, product ,category,trendyProduct, cart, order};
