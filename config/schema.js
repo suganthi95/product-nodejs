@@ -84,4 +84,6 @@ const orderSchema =new Schema({
 
 }) 
 const order = mongoose.model("order",orderSchema)
+
+
 module.exports ={user, product ,category,trendyProduct, cart, order};
