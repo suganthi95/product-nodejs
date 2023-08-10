@@ -16,16 +16,37 @@ const getList = async (req, res) => {
 const addOrder = async (req, res) => {
   try{
   await connectDb();
-  const list = await Order.order.insertMany([
-    {
-      user_email_id: req.body.user_email_id,
-      product_id: req.body.product_id,
-      product_title:req.body.title,
-      price: req.body.price,
-      quantity:req.body.quantity,
-      status: "Ordered"
-    }
+
+
+  let array = req.body.map((key)=>[
+    key.user_email_id,
+    key.product_id,
+    key.product_title,
+    key.price,
+    key.quantity
+
   ]);
+  console.log(array);
+  for(let i=0; i<array.length;i++){
+    let email_id = array[i][0];
+    let id = array[i][1];
+    let title=array[i][2];
+    let price= array[i][3];
+    let quantity = array[i][4];
+
+console.log(quantity);
+ await Order.order.insertMany([
+    {
+      user_email_id:email_id,
+      product_id:id,
+      product_title:title,
+      price: price,
+      quantity:quantity,
+      status: "Ordered"
+    }]
+  );
+
+  }
   res.status(200).json("order placed successfully....!");
 }catch(error){
   res.status(400).json(error)
